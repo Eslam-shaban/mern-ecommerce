@@ -1,0 +1,15 @@
+/* 1. Import fonts FIRST */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+/* 2. Import Tailwind core */
+@import "tailwindcss";
+
+/* 3. Your custom CSS (after Tailwind imports) */
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+@plugin "daisyui" {
+    themes: light --default;
+    /* , dark --prefersdark */
+}
