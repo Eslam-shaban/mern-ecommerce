@@ -18,8 +18,8 @@ const Login = () => {
         e.preventDefault();
         try {
             const response = await API.post("/users/login", formData);
-            console.log(response.data);
-            const user = response.data.token;
+            // console.log(response.data);
+            const user = response.data.user;
             dispatch(setUser(user));
             toast.success("Login successful! 🎉");
             navigate("/");

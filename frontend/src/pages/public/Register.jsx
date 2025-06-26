@@ -24,7 +24,7 @@ const Register = () => {
         try {
             const response = await API.post("/users/register", formData);
             // console.log(response.data);
-            const user = response.data.token;
+            const user = response.data.user;
             dispatch(setUser(user));
             toast.success("Registration successful! 🎉");
             navigate("/");

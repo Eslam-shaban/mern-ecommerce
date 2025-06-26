@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     user: (() => {   // Define an arrow function
         try {
-            return JSON.parse(localStorage.getItem("token")) || null;
+            return JSON.parse(localStorage.getItem("user")) || null;
             // return localStorage.getItem("token") || null;
         } catch (error) {
             console.error("Error parsing user from localStorage:", error);
@@ -26,12 +26,12 @@ const authSlice = createSlice({
         setUser: (state, action) => {
             // console.log(state)
             state.user = action.payload || null;
-            localStorage.setItem("token", JSON.stringify(action.payload)); // ❌ WRONG (this adds extra quotes) "\"eyJhbGciOiJIUzI1NiIs...\""
+            localStorage.setItem("user", JSON.stringify(action.payload)); // ❌ WRONG (this adds extra quotes) "\"eyJhbGciOiJIUzI1NiIs...\""
             // localStorage.setItem("token", action.payload); // Store user in localStorage
         },
         logout: (state) => {
             state.user = null;
-            localStorage.removeItem("token"); // Remove user from localStorage
+            localStorage.removeItem("user"); // Remove user from localStorage
         },
 
     },

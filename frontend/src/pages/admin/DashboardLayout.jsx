@@ -19,7 +19,7 @@ const DashboardLayout = () => {
     const navItems = [
         { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard, end: true },
         { to: "/dashboard/products", label: "Products", icon: Package },
-        { to: "/dashboard/categories", label: "Categories", icon: Tags },
+        // { to: "/dashboard/categories", label: "Categories", icon: Tags },
         { to: "/dashboard/orders", label: "Orders", icon: ShoppingCart },
         { to: "/dashboard/users", label: "Users", icon: Users },
         { to: "/dashboard/settings", label: "Settings", icon: Settings },

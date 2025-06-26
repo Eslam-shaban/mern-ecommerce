@@ -1,8 +1,8 @@
 import express from 'express';
 
-import { registerUser, loginUser, getAllUsers, getUserProfile } from '../controllers/authController.js';
+import { registerUser, loginUser, getAllUsers, getUserProfile, changePassword } from '../controllers/authController.js';
 import { isAdmin, protect } from '../middlewares/authMiddleware.js';
-import { validateLogin, validateRegister } from '../middlewares/validationUser.js';
+import { validateChangePassword, validateLogin, validateRegister } from '../middlewares/validationUser.js';
 
 const router = express.Router();
 
@@ -17,5 +17,7 @@ router.post('/login', validateLogin, loginUser)
 router.get("/", protect, isAdmin, getAllUsers);
 // each user can view his profile
 router.get("/profile", protect, getUserProfile);
+
+router.put("/change-password", protect, validateChangePassword, changePassword);
 
 export default router;

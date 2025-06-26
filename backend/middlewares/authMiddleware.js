@@ -33,7 +33,7 @@ export const protect = async (req, res, next) => {
     }
 };
 // Middleware to check if user is an admin
-export const isAdmin = (req, res, next) => {
+export const isAdmin = async (req, res, next) => {
     if (req.user && req.user.isAdmin) {
         next();
     } else {

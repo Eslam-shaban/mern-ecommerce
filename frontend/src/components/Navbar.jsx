@@ -3,10 +3,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout, setUser } from "../store/authSlice";
 import { Link } from "react-router-dom";
 import API from "../api/axiosInstance";
-import { Search, ShoppingCart, Menu, X } from "lucide-react";
+import { Search, ShoppingCart, Menu, X, CircleUser } from "lucide-react";
 import { useSearch } from "../contexts/SearchContext";
 import logo from "/logo2.svg";
 import { useCart } from "../contexts/CartContext";
+import { User, LogOut, LogIn, UserPlus, Package, ChevronDown } from "lucide-react";
+import { useRef } from "react";
 
 const Navbar = () => {
     const { user } = useSelector((state) => state.auth);
@@ -15,6 +17,8 @@ const Navbar = () => {
     const { cartItems } = useCart();
     const cartCount = cartItems.length || 0;
     const [menuOpen, setMenuOpen] = useState(false);
+    const [profileOpen, setProfileOpen] = useState(false);
+    const profileRef = useRef(null);
 
     const handleLogout = () => {
         dispatch(logout());
@@ -27,131 +31,189 @@ const Navbar = () => {
             try {
                 const response = await API.get("/users/profile", {
                     headers: { Authorization: `Bearer ${user.token}` },
-                    withCredentials: true,
+                    withCredentials: false,
                 });
-                dispatch(setUser(response.data.user));
+                const updatedUser = { ...user, ...response.data.user };
+                dispatch(setUser(updatedUser));
+                // dispatch(setUser(response.data.user));
             } catch (error) {
                 console.error("Error fetching user:", error);
             }
         };
 
+        // Call fetchUser here
         fetchUser();
+
+        // Handle outside click to close profile dropdown
+        const handleClickOutside = (event) => {
+            if (profileRef.current && !profileRef.current.contains(event.target)) {
+                setProfileOpen(false);
+                setMenuOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+
+        // Cleanup event listener on unmount
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
     }, [dispatch, user?.token]);
+
 
     return (
         <>
-            <nav className="bg-gradient-to-r from-orange-500 via-yellow-500 to-orange-300 text-white p-4 flex justify-between items-center shadow-lg relative z-50">
-                {/* Logo */}
-                <Link to="/" className="flex items-center space-x-2 w-72 h-14">
-                    <img src={logo} alt="Logo" />
-                </Link>
+            <nav className="bg-gradient-to-r from-orange-500 via-yellow-500 to-orange-400 text-white p-4 shadow-md sticky top-0 z-50">
+                <div className="max-w-7xl mx-auto flex justify-between items-center relative">
+                    {/* Logo */}
+                    <Link to="/" className="flex items-center space-x-2">
+                        <img src={logo} alt="Logo" className="h-10" />
+                        {/* <span className="text-2xl font-bold">Veltrix</span> */}
+                    </Link>
 
-                {/* Search Bar */}
-                <div className="w-1/3 hidden md:block">
-                    <div className="flex">
-                        <input
-                            type="text"
-                            placeholder="Search for products..."
-                            className="w-10/12 px-4 py-2 rounded-s-lg bg-amber-50/35  border-amber-400 focus:outline-none"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            onKeyDown={(e) => {
-                                if (e.key === "Enter") {
-                                    handleSearch(searchQuery);
-                                }
-                            }}
-
-                        />
-                        <div className="flex items-center justify-center p-2 bg-white/80 w-2/12 rounded-r-lg text-amber-500 cursor-pointer hover:text-black">
+                    {/* Search - Desktop */}
+                    <div className="hidden md:flex flex-1 justify-center">
+                        <div className="relative w-full max-w-md">
+                            <input
+                                type="text"
+                                placeholder="Search products..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                onKeyDown={(e) => e.key === "Enter" && handleSearch(searchQuery)}
+                                className="w-full px-4 py-2 rounded-lg text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-amber-400"
+                            />
                             <Search
-                                className=""
                                 size={20}
-                                onClick={() => {
-                                    handleSearch(searchQuery);
-                                }}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-amber-500 cursor-pointer"
+                                onClick={() => handleSearch(searchQuery)}
                             />
                         </div>
                     </div>
-                </div>
 
-                {/* Cart and Menu Toggle */}
-                <div className="flex items-center space-x-4 md:space-x-6">
-                    <Link to="/products/cart" className="relative">
-                        <ShoppingCart size={24} className="text-white hover:text-gray-800 transition" />
-                        <span className="absolute -top-1 -right-2 bg-red-500 text-white text-xs font-bold px-1 rounded-full">
-                            {cartCount}
-                        </span>
-                    </Link>
+                    {/* Right Section */}
+                    <div className="flex items-center gap-4">
 
-                    {/* Desktop Auth Links */}
-                    <div className="hidden md:flex items-center space-x-4">
-                        {user ? (
-                            <button
-                                onClick={handleLogout}
-                                className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded transition cursor-pointer"
-                            >
-                                Logout
-                            </button>
-                        ) : (
-                            <>
-                                <Link to="/login" className="hover:text-black font-bold transition">Login</Link>
-                                <Link to="/register" className="hover:text-black font-bold transition">Register</Link>
-                            </>
-                        )}
+                        <div className="hidden md:flex">
+                            <div className="relative">
+                                <button onClick={() => setProfileOpen(!profileOpen)} className="flex items-center gap-1 hover:text-black transition cursor-pointer">
+                                    <CircleUser size={24} />
+                                    {user ? <p>Hi, {user.name}</p> : <p>Account</p>}
+                                    <ChevronDown size={16} />
+                                </button>
+
+                                {profileOpen && (
+                                    <div ref={profileRef} className="absolute right-0 mt-3 w-48 text-black bg-white rounded-md shadow-lg z-50 overflow-hidden">
+                                        {user ? (
+                                            <div className="flex flex-col text-sm">
+                                                <Link to={`/profile/${user.id}`}
+                                                    onClick={() => setProfileOpen(false)}
+                                                    className="px-4 py-2 hover:bg-orange-200 hover:font-medium flex items-center gap-2">
+                                                    <CircleUser size={16} /> Profile
+                                                </Link>
+                                                <Link to={`/orders/${user.id}`}
+                                                    onClick={() => setProfileOpen(false)}
+                                                    className="px-4 py-2 hover:bg-orange-200 hover:font-medium flex items-center gap-2">
+                                                    <Package size={16} /> My Orders
+                                                </Link>
+                                                <button
+                                                    onClick={() => {
+                                                        handleLogout();
+                                                        setProfileOpen(false);
+                                                    }
+                                                    }
+                                                    className="w-full text-left px-4 py-2 hover:bg-red-100 hover:font-medium text-red-600 flex items-center gap-2 cursor-pointer"
+                                                >
+                                                    <LogOut size={16} /> Sign Out
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <div className="flex flex-col text-sm p-2">
+                                                <Link to="/login"
+                                                    onClick={() => setProfileOpen(false)}
+                                                    className="px-4 py-2 hover:bg-amber-100 hover:font-medium border-b-1 border-amber-200 flex items-center gap-2">
+                                                    <LogIn size={16} /> Login
+                                                </Link>
+                                                <Link to="/register"
+                                                    onClick={() => {
+                                                        handleLogout();
+                                                        setProfileOpen(false);
+                                                    }}
+                                                    className="px-4 py-2 hover:bg-amber-100 hover:font-medium flex items-center gap-2">
+                                                    <UserPlus size={16} /> Register
+                                                </Link>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        {/* Shopping Cart */}
+                        <Link to="/products/cart" className="relative">
+                            <ShoppingCart className="text-white hover:text-black transition" size={24} />
+                            {cartCount > 0 && (
+                                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-1 rounded-full">
+                                    {cartCount}
+                                </span>
+                            )}
+                        </Link>
+
+                        {/* Mobile menu toggle */}
+                        <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
+                            {menuOpen ? (
+                                <X size={28} className="cursor-pointer text-white hover:text-red-600 hover:rotate-180 hover:scale-105 " />
+                            ) : (
+                                <Menu size={28} className="cursor-pointer text-white hover:text-black" />
+                            )}
+                        </button>
                     </div>
-
-                    {/* Mobile Menu Icon */}
-                    <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
-                        {menuOpen ? <X size={28} className="cursor-pointer hover:text-red-600" /> : <Menu size={28} className="cursor-pointer hover:text-black" />}
-                    </button>
                 </div>
             </nav>
 
             {/* Mobile Menu */}
             {menuOpen && (
-                <div className="bg-orange-100/50 text-gray-800 w-full p-4 flex flex-col space-y-4 md:hidden shadow-md absolute z-40 top-[72px] left-0">
-                    <div className="w-full p-4">
-                        <input
-                            type="text"
-                            placeholder="Search products..."
-                            className="w-full px-4 py-2 rounded-md bg-amber-50/35 border-b border-gray-100 focus:outline-none"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            onKeyDown={(e) => {
-                                if (e.key === "Enter") {
-                                    handleSearch(searchQuery);
-                                    setMenuOpen(false); // optional: close mobile menu if open
-                                }
-                            }}
-
-                        />
+                <div ref={profileRef} className="md:hidden bg-orange-100/50 p-4 space-y-4 w-full absolute top-[72px] left-0 z-50">
+                    <input
+                        type="text"
+                        placeholder="Search..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onKeyDown={(e) => e.key === "Enter" && handleSearch(searchQuery)}
+                        className="w-full px-4 py-2 rounded-md text-black bg-amber-50/35 border border-gray-700"
+                    />
+                    <div className="flex flex-col gap-2">
+                        {user ? (
+                            <>
+                                <Link to={`/profile/${user.id}`}
+                                    onClick={() => setMenuOpen(false)}
+                                    className="px-4 py-2 rounded hover:bg-orange-200 hover:font-medium flex items-center gap-2">
+                                    <CircleUser size={16} /> Profile
+                                </Link>
+                                <Link to={`/orders/${user.id}`}
+                                    onClick={() => setMenuOpen(false)}
+                                    className="px-4 py-2 rounded hover:bg-orange-200 hover:font-medium flex items-center gap-2">
+                                    <Package size={16} /> My Orders
+                                </Link>
+                                <button
+                                    onClick={() => {
+                                        handleLogout();
+                                        setMenuOpen(false);
+                                    }} className="bg-red-500 text-white py-2 rounded hover:bg-red-600 cursor-pointer hover:scale-101">
+                                    Logout
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <Link to="/login" onClick={() => setMenuOpen(false)} className="px-4 py-2 rounded hover:bg-orange-200 hover:font-medium flex items-center gap-2">
+                                    <LogIn size={16} /> Login
+                                </Link>
+                                <Link to="/register" onClick={() => setMenuOpen(false)} className="px-4 py-2 rounded hover:bg-orange-200 hover:font-medium flex items-center gap-2">
+                                    <UserPlus size={16} /> Register
+                                </Link>
+                            </>
+                        )}
                     </div>
-                    {user ? (
-                        <button
-                            onClick={handleLogout}
-                            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                        >
-                            Logout
-                        </button>
-                    ) : (
-                        <>
-                            <Link
-                                to="/login"
-                                className="text-center text-2xl font-bold p-2 hover:text-amber-600 border-b border-gray-100"
-                                onClick={() => setMenuOpen(false)}
-                            >
-                                Login
-                            </Link>
-                            <Link
-                                to="/register"
-                                className="text-center text-2xl font-bold p-2 hover:text-amber-600"
-                                onClick={() => setMenuOpen(false)}
-                            >
-                                Register
-                            </Link>
-                        </>
-                    )}
                 </div>
+
             )}
         </>
     );

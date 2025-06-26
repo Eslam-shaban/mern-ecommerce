@@ -40,30 +40,30 @@ export const registerUser = async (req, res) => {
         const token = jwt.sign({ userId: newUser._id, isAdmin: newUser.isAdmin }, process.env.JWT_SECRET, { expiresIn: "1d" })
 
         // Store token in HttpOnly cookie (more secure)
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production", // Only for HTTPS in production
-            sameSite: "Strict",
-        });
+        // res.cookie("token", token, {
+        //     httpOnly: true,
+        //     secure: process.env.NODE_ENV === "production", // Only for HTTPS in production
+        //     sameSite: "Strict",
+        // });
 
         // Send only necessary user data in response
         res.status(201).json({
             success: true,
             message: "User registered successfully",
-            token: token,
-            // user: {
-            //     _id: newUser._id,
-            //     name: newUser.name,
-            //     email: newUser.email,
-            //     isAdmin: newUser.isAdmin,
-            //     token, // Send token with user data
-            // },
+            // token: token,
+            user: {
+                id: newUser._id,
+                name: newUser.name,
+                email: newUser.email,
+                isAdmin: newUser.isAdmin,
+                token: token,
+                // Send token with user data
+            },
         });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
 };
-
 
 export const loginUser = async (req, res) => {
     try {
@@ -84,22 +84,22 @@ export const loginUser = async (req, res) => {
         const token = jwt.sign({ userId: user._id, isAdmin: user.isAdmin }, process.env.JWT_SECRET, { expiresIn: "1d" })
 
         // Store token in HttpOnly cookie (more secure)
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production", // Only for HTTPS in production
-            sameSite: "Strict",
-        });
+        // res.cookie("token", token, {
+        //     httpOnly: true,
+        //     secure: process.env.NODE_ENV === "production", // Only for HTTPS in production
+        //     sameSite: "Strict",
+        // });
 
         res.status(200).json({
             success: true, message: "Login successful",
-            token: token,
-            // user: {
-            //     _id: user._id,
-            //     name: user.name,
-            //     email: user.email,
-            //     isAdmin: user.isAdmin,
-            //     token, // Send token with user data
-            // },
+            // token: token,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                isAdmin: user.isAdmin,
+                token: token, // Send token with user data
+            },
         });
     }
     catch (error) {
@@ -122,15 +122,46 @@ export const getUserProfile = async (req, res) => {
     try {
         // console.log('profile', req.user.id);
         // console.log('profile', req.user._id);
-        const user = await User.findById(req.user.id).select("-password");
+        const userId = req.user.id;
+        const user = await User.findById(userId).select("-password");
         // console.log(user)
         if (!user)
             return res.status(404).json({ success: false, message: "User not found" })
-        res.status(200).json({ success: true, user });
+        const safeUser = {
+            id: user._id.toString(), // convert ObjectId to string
+            name: user.name,
+            email: user.email,
+            isAdmin: user.isAdmin,
+        };
+        res.status(200).json({ success: true, user: safeUser });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 }
+export const changePassword = async (req, res) => {
+    const { oldPassword, newPassword } = req.body;
+
+    try {
+        const user = await User.findById(req.user._id);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found." });
+        }
+        const isMatch = await bcrypt.compare(oldPassword, user.password);
+        if (!isMatch) return res.status(400).json({ success: false, message: "Old password is incorrect." })
+
+        // hash new password
+        const salt = await bcrypt.genSalt(10);
+        const newhashedPassword = await bcrypt.hash(newPassword, salt);
+        user.password = newhashedPassword;
+        await user.save();
+
+        res.status(200).json({ message: "Password updated successfully." });
+    } catch (error) {
+        console.error("Error in changePassword:", error);
+        res.status(500).json({ message: "Server error. Please try again later." });
+    }
+};
 
 // if we using cookies instead of localStorage
 // export const logoutUser = async (req, res) => {

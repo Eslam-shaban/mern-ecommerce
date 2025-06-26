@@ -7,12 +7,17 @@ import CartPage from "../pages/public/CartPage";
 import DashboardLayout from "../pages/admin/DashboardLayout";
 import Overview from "../pages/admin/Overview";
 import ProductsList from "../pages/admin/ProductsList";
-import Categories from "../pages/admin/Categories";
+// import Categories from "../pages/admin/Categories";
 import OrdersList from "../pages/admin/OrdersList";
 import UsersList from "../pages/admin/UsersList";
 import Settings from "../pages/admin/Settings";
 import EditProduct from "../pages/admin/EditProduct";
 import AddProduct from "../pages/admin/AddProduct";
+import PrivateRoute from "./PrivteRoute";
+import AdminRoute from "./AdminRoute";
+import UserProfile from "../pages/public/UserProfile";
+import UserOrders from "../pages/public/UserOrders";
+import ChangePassword from "../pages/public/ChangePassword";
 
 const AppRouter = () => {
     return (
@@ -24,17 +29,27 @@ const AppRouter = () => {
             <Route path="/products/:id" element={<ProductDetails />} />
             <Route path="/products/cart" element={<CartPage />} />
 
-            {/* Admin Dashboard Routes */}
-            <Route path="/dashboard" element={<DashboardLayout />}>
-                <Route index element={<Overview />} />
-                <Route path="products" element={<ProductsList />} />
-                <Route path="products/:id/edit" element={<EditProduct />} />
-                <Route path="products/new" element={<AddProduct />} />
-                <Route path="categories" element={<Categories />} />
-                <Route path="orders" element={<OrdersList />} />
-                <Route path="users" element={<UsersList />} />
-                <Route path="settings" element={<Settings />} />
+            {/* Protected Routes (Signed-in users only) */}
+            <Route element={<PrivateRoute />}>
+                {/* Could place /profile or /orders/user routes here later */}
+                <Route path="/profile/:id" element={<UserProfile />} />
+                <Route path="/orders/:id" element={<UserOrders />} />
+                <Route path="/change-password/:id" element={<ChangePassword />} />
             </Route>
+
+            {/* Admin Routes (Signed-in & isAdmin only) */}
+            <Route element={<AdminRoute />}>
+                <Route path="/dashboard" element={<DashboardLayout />}>
+                    <Route index element={<Overview />} />
+                    <Route path="products" element={<ProductsList />} />
+                    <Route path="products/:id/edit" element={<EditProduct />} />
+                    <Route path="products/new" element={<AddProduct />} />
+                    <Route path="orders" element={<OrdersList />} />
+                    <Route path="users" element={<UsersList />} />
+                    <Route path="settings" element={<Settings />} />
+                </Route>
+            </Route>
+
         </Routes>
 
     );

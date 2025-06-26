@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Categories = () => {
+const UserOrders = () => {
     return (
         <div>
-            Categories
+            UserOrders
         </div>
     );
 }
 
-export default Categories;
+export default UserOrders;

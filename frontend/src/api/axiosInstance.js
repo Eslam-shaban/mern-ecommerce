@@ -12,14 +12,25 @@ const axiosInstance = axios.create({
 
 // ✅ Inject token from localStorage
 axiosInstance.interceptors.request.use((config) => {
-    const token = JSON.parse(localStorage.getItem("token"));
-    // const token = localStorage.getItem("token");
-    // console.log("Token added to header:", token);
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-        // console.log(config.headers.Authorization)
+    const userString = localStorage.getItem("user");
+    // console.log(userString)
+    if (userString) {
+        const user = JSON.parse(userString);
+        config.headers.Authorization = `Bearer ${user.token}`;
     }
     return config;
 });
+
+// axiosInstance.interceptors.request.use((config) => {
+//     const user = JSON.parse(localStorage.getItem("user"));
+//     console.log(user)
+//     // const token = localStorage.getItem("token");
+//     // console.log("Token added to header:", token);
+//     if (user.token) {
+//         config.headers.Authorization = `Bearer ${user.token}`;
+//         // console.log(config.headers.Authorization)
+//     }
+//     return config;
+// });
 
 export default axiosInstance;
