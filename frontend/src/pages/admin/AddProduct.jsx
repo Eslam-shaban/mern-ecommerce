@@ -180,6 +180,7 @@ const AddProduct = () => {
                             <div key={index} className="relative w-24 h-24 rounded overflow-hidden border shadow-sm group">
                                 <img
                                     src={url}
+                                    loading="lazy"
                                     alt={`product-${index}`}
                                     className="w-full h-full object-cover"
                                 />

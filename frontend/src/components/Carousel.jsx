@@ -3,15 +3,12 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const carouselImages = [
     "/carousel/1.jpg",
-    "/carousel/2.jpg",
     "/carousel/3.jpg",
     "/carousel/4.jpg",
-    "/carousel/5.jpg",
-    "/carousel/6.jpg",
     "/carousel/7.jpg",
     "/carousel/8.jpg",
     "/carousel/9.jpg",
-    "/carousel/10.jpg",
+
 ];
 
 const Carousel = () => {
@@ -36,7 +33,7 @@ const Carousel = () => {
                     className={`carousel-item w-full absolute transition-opacity duration-1000 ease-in-out ${i === index ? "opacity-100 relative" : "opacity-0"
                         }`}
                 >
-                    <img src={src} className="w-full h-full object-cover" />
+                    <img src={src} loading="lazy" className="w-full h-full object-cover" />
                 </div>
             ))}
 

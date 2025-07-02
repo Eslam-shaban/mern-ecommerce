@@ -67,7 +67,7 @@ const Navbar = () => {
                 <div className="max-w-7xl mx-auto flex justify-between items-center relative">
                     {/* Logo */}
                     <Link to="/" className="flex items-center space-x-2">
-                        <img src={logo} alt="Logo" className="h-10" />
+                        <img src={logo} loading="lazy" alt="Logo" className="h-10" />
                         {/* <span className="text-2xl font-bold">Veltrix</span> */}
                     </Link>
 

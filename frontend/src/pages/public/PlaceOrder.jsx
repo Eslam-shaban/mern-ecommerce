@@ -75,7 +75,7 @@ const PlaceOrder = () => {
                             {cartItems.map(item => (
                                 <li key={item._id} className="flex justify-between border-b pb-2">
                                     <div className="flex gap-4 items-center">
-                                        <img src={item.images[0]} alt={item.name} className="w-16 h-16 object-cover rounded" />
+                                        <img loading="lazy" src={item.images[0]} alt={item.name} className="w-16 h-16 object-cover rounded" />
                                         <span>{item.name}</span>
                                     </div>
                                     <div>

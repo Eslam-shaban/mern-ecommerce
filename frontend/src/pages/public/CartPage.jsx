@@ -24,7 +24,7 @@ const CartPage = () => {
                             <li key={item._id} className="flex justify-between items-center shadow-[0_8px_24px_0px_rgba(149,157,156,0.4)] p-4 rounded-md">
                                 <div className='flex gap-5'>
                                     <div>
-                                        <img src={item.images[0]} alt={item.name} className='w-20 h-20' />
+                                        <img loading="lazy" src={item.images[0]} alt={item.name} className='w-20 h-20' />
                                     </div>
                                     <div>
                                         <h2 className="font-semibold pb-4">{item.name}</h2>

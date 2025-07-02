@@ -94,6 +94,7 @@ const ProductsList = () => {
                                     <img
                                         src={product.images?.[0] || "/placeholder.png"}
                                         alt={product.name}
+                                        loading="lazy"
                                         className="w-10 h-10 rounded object-cover border border-gray-400"
                                     />
                                     <span className="font-medium text-gray-800">{product.name}</span>

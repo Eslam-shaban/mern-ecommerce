@@ -70,6 +70,7 @@ function ProductDetails() {
                         /> */}
                         <InnerImageZoom
                             src={mainImage}
+                            loading="lazy"
                             zoomSrc={mainImage} // or use a higher-res version if available
                             zoomType="click"
                             zoomPreload={true}
@@ -83,6 +84,7 @@ function ProductDetails() {
                                 <img
                                     key={index}
                                     src={img}
+                                    loading="lazy"
                                     alt={`Thumbnail ${index}`}
                                     className={`w-20 h-20 object-contain cursor-pointer border-2 rounded-md 
                                     ${selectedImage === img ? "border-amber-400" : "border-gray-200"}
