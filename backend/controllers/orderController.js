@@ -22,15 +22,16 @@ import Product from '../models/Product.js';
 
 export const createOrder = async (req, res) => {
     try {
-        const { orderItems, shippingAddress, paymentMethod, totalPrice } = req.body;
+        const { orderItems, shippingAddress, paymentMethod, itemsPrice, shippingPrice, totalPrice } = req.body;
 
+        // console.log(orderItems);
         if (!orderItems || orderItems.length === 0) {
             return res.status(400).json({ success: false, message: "No items in the order" });
         }
 
         // Check stock availability
         for (const item of orderItems) {
-            const product = await Product.findById(item._id);
+            const product = await Product.findById(item.product);
             if (!product || product.stock < item.quantity) {
                 return res.status(400).json({ success: false, message: `${item.name} is out of stock.` });
             }
@@ -39,19 +40,21 @@ export const createOrder = async (req, res) => {
         // Create order
         const order = new Order({
             user: req.user._id,
-            orderItems,
             shippingAddress,
+            orderItems,
             paymentMethod,
+            itemsPrice,
+            shippingPrice,
             totalPrice,
-            paymentStatus: paymentMethod === 'cod' ? 'pending' : 'unpaid'
+            paymentStatus: paymentMethod === 'cash-on-delivery' ? 'pending' : 'paid'
         });
 
         const createdOrder = await order.save();
 
         // Reduce stock immediately for COD
-        if (paymentMethod === 'cod') {
+        if (paymentMethod === 'cash-on-delivery') {
             for (const item of orderItems) {
-                const product = await Product.findById(item._id);
+                const product = await Product.findById(item.product);
                 product.stock -= item.quantity;
                 await product.save();
             }

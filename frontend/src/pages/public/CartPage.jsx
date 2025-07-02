@@ -1,10 +1,16 @@
 import React from 'react';
 import { useCart } from '../../contexts/CartContext';
 import { Trash2Icon } from 'lucide-react';
-const CartPage = () => {
-    const { cartItems, addToCart, removeFromCart, clearCart, decreaseQuantity } = useCart();
+import { useNavigate } from 'react-router-dom';
 
-    const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+const CartPage = () => {
+    const { cartItems, addToCart, removeFromCart, clearCart, decreaseQuantity, calculateTotalPrice } = useCart();
+
+
+    const total = calculateTotalPrice();
+
+    // Inside the CartPage component
+    const navigate = useNavigate();
 
     return (
         <div className="container mx-auto p-6">
@@ -19,24 +25,21 @@ const CartPage = () => {
                                 <div className='flex gap-5'>
                                     <div>
                                         <img src={item.images[0]} alt={item.name} className='w-20 h-20' />
-
                                     </div>
                                     <div>
                                         <h2 className="font-semibold pb-4">{item.name}</h2>
                                         <button
                                             onClick={() => removeFromCart(item._id)}
-                                            className="flex gap-2 text-amber-600 p-2 cursor-pointer  rounded-md hover:bg-amber-600/30"
+                                            className="flex gap-2 text-amber-600 p-2 cursor-pointer rounded-md hover:bg-amber-600/30"
                                         >
                                             <Trash2Icon />  Remove
                                         </button>
-
                                     </div>
                                 </div>
                                 <div className='flex flex-col gap-4'>
-
                                     <h2 className='text-2xl text-center'>${item.price} </h2>
                                     <div className='flex gap-5'>
-                                        <button className={`px-2 rounded-md font-bold text-white text-xl cursor-pointer  ${item.quantity === 1 ? "bg-gray-400" : "bg-amber-500 hover:bg-amber-600"}`}
+                                        <button className={`px-2 rounded-md font-bold text-white text-xl cursor-pointer  ${item.quantity === 1 ? "bg-gray-400 disabled:cursor-not-allowed" : "bg-amber-500 hover:bg-amber-600"}`}
                                             onClick={() => decreaseQuantity(item._id)}
                                             disabled={item.quantity === 1}
                                         >-</button>
@@ -58,6 +61,14 @@ const CartPage = () => {
                             Clear Cart
                         </button>
                     </div>
+                    <button
+                        onClick={() => navigate('/shipping')}
+                        className={`mt-4 px-4 py-2 rounded text-white ${cartItems.length === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-emerald-600 hover:bg-emerald-700'}`}
+                        disabled={cartItems.length === 0}
+                    >
+                        Proceed to Checkout
+                    </button>
+
                 </>
             )}
         </div>

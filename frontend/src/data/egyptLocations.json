@@ -1,0 +1,111 @@
+[
+    {
+        "governorate": "Cairo",
+        "cities": [
+            "Nasr City",
+            "Heliopolis",
+            "Maadi",
+            "New Cairo",
+            "Shubra",
+            "Downtown",
+            "Zamalek",
+            "Ain Shams",
+            "El Marg",
+            "El Matareya"
+        ]
+    },
+    {
+        "governorate": "Giza",
+        "cities": [
+            "6th October",
+            "Sheikh Zayed",
+            "Dokki",
+            "Mohandessin",
+            "Haram",
+            "Imbaba",
+            "Faisal",
+            "Agouza"
+        ]
+    },
+    {
+        "governorate": "Alexandria",
+        "cities": [
+            "Smouha",
+            "Stanley",
+            "Sidi Gaber",
+            "Mandara",
+            "Sporting",
+            "Miami",
+            "Gleem",
+            "Al Ibrahimiyyah"
+        ]
+    },
+    {
+        "governorate": "Dakahlia",
+        "cities": [
+            "Mansoura",
+            "Talkha",
+            "Mit Ghamr",
+            "Belqas",
+            "Sherbin"
+        ]
+    },
+    {
+        "governorate": "Sharqia",
+        "cities": [
+            "Zagazig",
+            "10th of Ramadan",
+            "Belbeis",
+            "Abu Kabir",
+            "Minya El Qamh"
+        ]
+    },
+    {
+        "governorate": "Qalyubia",
+        "cities": [
+            "Banha",
+            "Qalyub",
+            "Shubra El Kheima",
+            "Toukh",
+            "Khosous"
+        ]
+    },
+    {
+        "governorate": "Monufia",
+        "cities": [
+            "Shebin El-Kom",
+            "Ashmoun",
+            "Sadat City",
+            "Menouf",
+            "Quesna"
+        ]
+    },
+    {
+        "governorate": "Beheira",
+        "cities": [
+            "Damanhur",
+            "Kafr El Dawwar",
+            "Rashid",
+            "Etay El Baroud"
+        ]
+    },
+    {
+        "governorate": "Faiyum",
+        "cities": [
+            "Faiyum",
+            "Sinnuris",
+            "Ibshway",
+            "Tamiya",
+            "Etsa"
+        ]
+    },
+    {
+        "governorate": "Suez",
+        "cities": [
+            "Suez",
+            "Ain Sokhna",
+            "Ataqa",
+            "Port Tawfik"
+        ]
+    }
+]

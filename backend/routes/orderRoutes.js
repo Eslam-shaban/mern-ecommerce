@@ -13,7 +13,7 @@ const router = express.Router();
 // Create Order (User must be logged in)
 router.post('/', protect, createOrder);
 
-// Get USer's Order
+// Get User's Order
 router.get('/my-orders', protect, getMyOrders);
 
 // Get All Orders (Admin only)
