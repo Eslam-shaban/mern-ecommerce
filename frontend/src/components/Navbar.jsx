@@ -14,15 +14,15 @@ const Navbar = () => {
     const { user } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const { searchQuery, setSearchQuery, handleSearch } = useSearch();
-    const { cartItems } = useCart();
+    const { cartItems, clearCart } = useCart();
     const cartCount = cartItems.length || 0;
     const [menuOpen, setMenuOpen] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
     const profileRef = useRef(null);
 
     const handleLogout = () => {
-        dispatch(logout());
-        setMenuOpen(false);
+        clearCart();                 // ✅ Safe to call here
+        dispatch(logout()); // No need to pass clearCart inside
     };
 
     useEffect(() => {

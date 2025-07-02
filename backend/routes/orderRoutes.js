@@ -5,6 +5,7 @@ import {
     getMyOrders,
     updateOrderToPaid,
     updateOrderToDelivered,
+    getOrderById,
 } from "../controllers/orderController.js";
 import { protect, isAdmin } from "../middlewares/authMiddleware.js";
 
@@ -15,6 +16,9 @@ router.post('/', protect, createOrder);
 
 // Get User's Order
 router.get('/my-orders', protect, getMyOrders);
+
+// Get Order by id
+router.get("/:id", protect, getOrderById);
 
 // Get All Orders (Admin only)
 router.get("/", protect, isAdmin, getAllOrders);

@@ -32,6 +32,8 @@ const authSlice = createSlice({
         logout: (state) => {
             state.user = null;
             localStorage.removeItem("user"); // Remove user from localStorage
+            localStorage.removeItem("cart");
+            localStorage.removeItem("shippingAddress");
         },
 
     },

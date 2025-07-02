@@ -163,8 +163,19 @@ export const changePassword = async (req, res) => {
     }
 };
 
+
+// 1st way
 // if we using cookies instead of localStorage
 // export const logoutUser = async (req, res) => {
 //     res.cookie("token", "", { expires: new Date(0) });
 //     res.status(200).json({ success: true, message: "Logged out successfully" });
+// };
+// or 2nd way
+// export const logoutUser = async (req, res) => {
+//   res.clearCookie("token", {
+//     httpOnly: true,
+//     secure: process.env.NODE_ENV === "production",
+//     sameSite: "Strict",
+//   });
+//   res.status(200).json({ success: true, message: "Logged out" });
 // };

@@ -21,6 +21,7 @@ import ChangePassword from "../pages/public/ChangePassword";
 import ShippingForm from "../pages/public/ShippingForm";
 import PlaceOrder from "../pages/public/PlaceOrder";
 import Payment from "../pages/public/Payment";
+import OrderDetails from "../pages/public/OrderDetails";
 
 const AppRouter = () => {
     return (
@@ -35,12 +36,13 @@ const AppRouter = () => {
             {/* Protected Routes (Signed-in users only) */}
             <Route element={<PrivateRoute />}>
                 {/* Could place /profile or /orders/user routes here later */}
-                <Route path="/profile/:id" element={<UserProfile />} />
-                <Route path="/order/:id" element={<UserOrders />} />
-                <Route path="/change-password/:id" element={<ChangePassword />} />
+                <Route path="/profile/:userId" element={<UserProfile />} />
+                <Route path="/orders/:userId" element={<UserOrders />} />
+                <Route path="/change-password/:userId" element={<ChangePassword />} />
                 <Route path="/shipping/" element={<ShippingForm />} />
                 <Route path="/place-order/" element={<PlaceOrder />} />
-                <Route path="/payment/stripe/:orderId" element={<Payment />} />
+                <Route path="/place-order/" element={<PlaceOrder />} />
+                <Route path="/order/:orderId" element={<OrderDetails />} />
             </Route>
 
             {/* Admin Routes (Signed-in & isAdmin only) */}

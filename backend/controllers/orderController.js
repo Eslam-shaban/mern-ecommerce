@@ -1,24 +1,6 @@
 import Order from '../models/Order.js';
 import Product from '../models/Product.js';
 
-//  Create a new order
-// export const createOrder = async (req, res) => {
-//     try {
-//         const { orderItems, shippingAddress, paymentMethod, totalPrice } = req.body;
-
-//         // console.log(req.user);
-//         if (!orderItems || orderItems.length === 0) {
-//             return res.status(400).json({ success: false, message: "No items in the order" });
-//         }
-//         const order = new Order({ user: req.user._id, orderItems, shippingAddress, paymentMethod, totalPrice });
-//         // console.log(order);
-//         const createdOrder = await order.save();
-//         res.status(201).json({ success: true, createdOrder });
-//     }
-//     catch (error) {
-//         res.status(500).json({ success: false, message: error.message });
-//     }
-// };
 
 export const createOrder = async (req, res) => {
     try {
@@ -85,6 +67,36 @@ export const getMyOrders = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
+
+// @desc    Get single order by ID
+// @route   GET /api/orders/:id
+// @access  Private (logged-in user or admin)
+export const getOrderById = async (req, res) => {
+    const id = req.params.id;
+
+    // Optional: validate ObjectId
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(400).json({ success: false, message: "Invalid order ID" });
+    }
+
+    try {
+        const order = await Order.findById(id).populate("user", "name email");
+
+        if (!order) {
+            return res.status(404).json({ success: false, message: "Order not found" });
+        }
+
+        // Only the order owner or an admin can access the order
+        if (order.user._id.toString() !== req.user._id.toString() && !req.user.isAdmin) {
+            return res.status(403).json({ success: false, message: "Not authorized to view this order" });
+        }
+
+        res.status(200).json({ success: true, order });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
 
 //  Update order to "Paid"
 export const updateOrderToPaid = async (req, res) => {
