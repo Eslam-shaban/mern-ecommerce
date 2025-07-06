@@ -1,22 +1,36 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { jwtDecode } from "jwt-decode"; // Make sure you install this with: npm i jwt-decode
+
 const initialState = {
-    user: (() => {   // Define an arrow function
+    user: (() => {
         try {
-            return JSON.parse(localStorage.getItem("user")) || null;
-            // return localStorage.getItem("token") || null;
+            const storedUser = JSON.parse(localStorage.getItem("user"));
+            if (!storedUser?.token) return null;
+
+            const decoded = jwtDecode(storedUser.token);
+            const isExpired = decoded.exp < Date.now() / 1000;
+
+            if (isExpired) {
+                localStorage.removeItem("user");
+                return null;
+            }
+
+            return storedUser;
         } catch (error) {
-            console.error("Error parsing user from localStorage:", error);
+            console.error("Error parsing or validating token:", error);
+            localStorage.removeItem("user");
             return null;
         }
-    })(),  // <-- Immediately invoking it
-
-    // using cookies instead of localStorage
-    // if we using cookies instead of localStorage
-    // user: null, // No need to get from localStorage since we store auth in cookies
-
-
+    })()
 };
+
+// using cookies instead of localStorage
+// if we using cookies instead of localStorage
+// user: null, // No need to get from localStorage since we store auth in cookies
+
+
+
 
 
 const authSlice = createSlice({

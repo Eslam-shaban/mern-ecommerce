@@ -49,10 +49,30 @@ export const createOrder = async (req, res) => {
 };
 
 // get all orders (Admin only)
-export const getAllOrders = async (req, res) => {
+export const getAllOrders = async (req, res,) => {
     try {
-        const orders = await Order.find().populate("user", "name email");
-        res.status(200).json({ success: true, orders });
+        const { page = 1, limit = 10 } = req.query;
+        const skip = (page - 1) * limit;
+        const orders = await Order.find()
+            .populate("user", "name email")
+            .skip(skip)
+            .limit(Number(limit));
+        const totalOrders = await Order.countDocuments();
+        if (!orders.length) {
+            return res.status(404).json({ success: false, message: "No orders found" });
+        }
+        const totalPages = Math.ceil(totalOrders / limit);
+
+        res.status(200).json({
+            success: true,
+            orders,
+            pagination: {
+                currentPage: Number(page),
+                totalPages,
+                totalOrders,
+                limit: Number(limit),
+            }
+        });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
@@ -61,8 +81,27 @@ export const getAllOrders = async (req, res) => {
 //Get logged-in user's orders
 export const getMyOrders = async (req, res) => {
     try {
-        const orders = await Order.find({ user: req.user._id });
-        res.status(200).json({ success: true, orders });
+        const { page = 1, limit = 10 } = req.query;
+        const skip = (page - 1) * limit;
+        const orders = await Order.find({ user: req.user._id })
+            .skip(skip)
+            .limit(Number(limit));
+
+        const totalOrders = await Order.countDocuments({ user: req.user._id });
+        if (!orders.length) {
+            return res.status(404).json({ success: false, message: "No orders found" });
+        }
+        const totalPages = Math.ceil(totalOrders / limit);
+        res.status(200).json({
+            success: true,
+            orders,
+            pagination: {
+                currentPage: Number(page),
+                totalPages,
+                totalOrders,
+                limit: Number(limit),
+            }
+        });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
