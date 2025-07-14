@@ -6,7 +6,8 @@ import API from "../api/axiosInstance";
 import { Search, ShoppingCart, Menu, X, CircleUser } from "lucide-react";
 import { useSearch } from "../contexts/SearchContext";
 import logo from "/logo2.svg";
-import { useCart } from "../contexts/CartContext";
+// import { useCart } from "../contexts/CartContext";
+import { clearCart } from '../store/cartSlice'
 import { User, LogOut, LogIn, UserPlus, Package, ChevronDown } from "lucide-react";
 import { useRef } from "react";
 
@@ -14,14 +15,15 @@ const Navbar = () => {
     const { user } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const { searchQuery, setSearchQuery, handleSearch } = useSearch();
-    const { cartItems, clearCart } = useCart();
-    const cartCount = cartItems.length || 0;
+    // const { cartItems, clearCart } = useCart();
+    const { cartItems } = useSelector((state) => state.cart);
+    const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
     const [menuOpen, setMenuOpen] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
     const profileRef = useRef(null);
 
     const handleLogout = () => {
-        clearCart();                 // ✅ Safe to call here
+        dispatch(clearCart());                 // ✅ Safe to call here
         dispatch(logout()); // No need to pass clearCart inside
     };
 
@@ -135,7 +137,6 @@ const Navbar = () => {
                                                 </Link>
                                                 <Link to="/register"
                                                     onClick={() => {
-                                                        handleLogout();
                                                         setProfileOpen(false);
                                                     }}
                                                     className="px-4 py-2 hover:bg-amber-100 hover:font-medium flex items-center gap-2">
@@ -171,7 +172,7 @@ const Navbar = () => {
 
             {/* Mobile Menu */}
             {menuOpen && (
-                <div ref={profileRef} className="md:hidden bg-orange-100/50 p-4 space-y-4 w-full absolute top-[72px] left-0 z-50">
+                <div ref={profileRef} className="md:hidden bg-orange-300/90 p-4 space-y-4 w-full absolute top-[72px] left-0 z-50">
                     <input
                         type="text"
                         placeholder="Search..."

@@ -22,6 +22,7 @@ import ShippingForm from "../pages/public/ShippingForm";
 import PlaceOrder from "../pages/public/PlaceOrder";
 import Payment from "../pages/public/Payment";
 import OrderDetails from "../pages/public/OrderDetails";
+import StripePayment from "../pages/public/StripePayment";
 
 const AppRouter = () => {
     return (
@@ -43,6 +44,8 @@ const AppRouter = () => {
                 <Route path="/place-order/" element={<PlaceOrder />} />
                 <Route path="/place-order/" element={<PlaceOrder />} />
                 <Route path="/order/:orderId" element={<OrderDetails />} />
+                <Route path="/payment/stripe/:orderId" element={<StripePayment />} />
+
             </Route>
 
             {/* Admin Routes (Signed-in & isAdmin only) */}

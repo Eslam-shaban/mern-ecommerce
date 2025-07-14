@@ -5,6 +5,7 @@ import connectDB from './config/db.js'; // Ensure to include the `.js` extension
 import productRoutes from './routes/productRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
+import stripeRoutes from './routes/stripeRoutes.js'
 import cookieParser from "cookie-parser";
 
 // Load environment variables
@@ -29,7 +30,7 @@ app.use(cors({
 app.use('/api/v1/products', productRoutes)
 app.use('/api/v1/users', authRoutes);
 app.use('/api/v1/orders', orderRoutes); //  Use order routes
-
+app.use('/api/v1/stripe', stripeRoutes);
 
 
 // Error handling middleware

@@ -54,7 +54,7 @@ const UserOrders = () => {
 
             {loading ? (
                 <p>Loading...</p>
-            ) : orders.length === 0 ? (
+            ) : (!orders || orders.length === 0) ? (
                 <p className="text-gray-600">You have no orders yet.</p>
             ) : (
                 <div className="overflow-x-auto rounded-xl">
@@ -76,8 +76,8 @@ const UserOrders = () => {
                                     <td className="p-4 text-gray-600">{new Date(order.createdAt).toLocaleDateString()}</td>
                                     <td className="p-4 text-green-600 font-semibold">EGP {order.totalPrice}</td>
                                     <td className="p-4">
-                                        <span className={`inline-block text-xs px-2 py-1 rounded-full ${order.isPaid ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
-                                            {order.isPaid ? "Yes" : "No"}
+                                        <span className={`inline-block text-xs px-2 py-1 rounded-full ${order.paymentStatus === "pending" ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"}`}>
+                                            {order.paymentStatus === "pending" ? "No" : "Yes"}
                                         </span>
                                     </td>
                                     <td className="p-4">

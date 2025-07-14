@@ -1,27 +1,35 @@
 import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import { useCart } from '../../contexts/CartContext';
+// import { useCart } from '../../contexts/CartContext';
+import { clearCart } from '../../store/cartSlice';
+import { useDispatch } from 'react-redux';
 import API from '../../api/axiosInstance';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 const PlaceOrder = () => {
+    // const { cartItems, clearCart, calculateTotalPrice } = useCart();
+    const cartItems = useSelector((state) => state.cart.cartItems);
     const [paymentMethod, setPaymentMethod] = useState('cash-on-delivery');
-
     const navigate = useNavigate();
-    const shippingAddress = JSON.parse(localStorage.getItem('shippingAddress')) || {};
-
-    const { cartItems, clearCart, calculateTotalPrice } = useCart();
-    const itemsPrice = calculateTotalPrice();
+    const dispatch = useDispatch();
+    const itemsPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const shippingPrice = itemsPrice > 100 ? 0 : 20;
     const totalPrice = itemsPrice + shippingPrice;
+    const shippingAddress = JSON.parse(localStorage.getItem('shippingAddress')) || {
+        address: '',
+        city: '',
+        state: '',
+        country: ''
+    };
 
     const placeOrder = async () => {
         const orderItems = cartItems.map(item => ({
             product: item._id,
-            name: item.name,
-            images: item.images,
+            name: item.name || '',
+            images: item.images || [],
             price: item.price,
             quantity: item.quantity
         }));
@@ -43,8 +51,8 @@ const PlaceOrder = () => {
 
                 if (paymentMethod === 'cash-on-delivery') {
                     // console.log("here inside cash on delivery")
-                    clearCart(); // ✅ you're doing this
-                    localStorage.removeItem('cart'); // ✅ fix the key name
+                    dispatch(clearCart()); // ✅ you're doing this
+                    // localStorage.removeItem('cart'); // ✅ fix the key name
                     navigate(`/order/${res.data.createdOrder._id}`);
                 } else if (paymentMethod === 'card-stripe') {
                     navigate(`/payment/stripe/${res.data.createdOrder._id}`);

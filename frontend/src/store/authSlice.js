@@ -13,6 +13,7 @@ const initialState = {
 
             if (isExpired) {
                 localStorage.removeItem("user");
+                localStorage.removeItem("shippingAddress");
                 return null;
             }
 

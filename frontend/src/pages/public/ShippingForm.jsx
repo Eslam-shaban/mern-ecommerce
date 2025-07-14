@@ -204,7 +204,7 @@ const ShippingForm = () => {
 
                 <button
                     type="submit"
-                    className="w-full py-2 bg-orange-500 text-white font-semibold rounded hover:bg-orange-600"
+                    className="w-full py-2 bg-amber-500 text-white font-semibold rounded hover:bg-amber-600 cursor-pointer"
                 >
                     Continue to Place Order
                 </button>

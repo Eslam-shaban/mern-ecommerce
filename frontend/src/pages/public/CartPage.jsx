@@ -1,13 +1,16 @@
 import React from 'react';
-import { useCart } from '../../contexts/CartContext';
 import { Trash2Icon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+// import { useCart } from '../../contexts/CartContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart, removeFromCart, clearCart, decreaseQuantity } from '../../store/cartSlice';
 
 const CartPage = () => {
-    const { cartItems, addToCart, removeFromCart, clearCart, decreaseQuantity, calculateTotalPrice } = useCart();
-
-
-    const total = calculateTotalPrice();
+    // const { cartItems, addToCart, removeFromCart, clearCart, decreaseQuantity, calculateTotalPrice } = useCart();
+    // const total = calculateTotalPrice();
+    const cartItems = useSelector((state) => state.cart.cartItems);
+    const dispatch = useDispatch();
+    const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
     // Inside the CartPage component
     const navigate = useNavigate();
@@ -29,7 +32,7 @@ const CartPage = () => {
                                     <div>
                                         <h2 className="font-semibold pb-4">{item.name}</h2>
                                         <button
-                                            onClick={() => removeFromCart(item._id)}
+                                            onClick={() => dispatch(removeFromCart(item._id))}
                                             className="flex gap-2 text-amber-600 p-2 cursor-pointer rounded-md hover:bg-amber-600/30"
                                         >
                                             <Trash2Icon />  Remove
@@ -40,12 +43,12 @@ const CartPage = () => {
                                     <h2 className='text-2xl text-center'>${item.price} </h2>
                                     <div className='flex gap-5'>
                                         <button className={`px-2 rounded-md font-bold text-white text-xl cursor-pointer  ${item.quantity === 1 ? "bg-gray-400 disabled:cursor-not-allowed" : "bg-amber-500 hover:bg-amber-600"}`}
-                                            onClick={() => decreaseQuantity(item._id)}
+                                            onClick={() => dispatch(decreaseQuantity(item._id))}
                                             disabled={item.quantity === 1}
                                         >-</button>
                                         <p>{item.quantity}</p>
                                         <button className='px-2 bg-amber-500 rounded-md font-bold text-white text-xl cursor-pointer hover:bg-amber-600'
-                                            onClick={() => addToCart(item)}>+</button>
+                                            onClick={() => dispatch(addToCart(item))}>+</button>
                                     </div>
                                 </div>
                             </li>
@@ -55,7 +58,7 @@ const CartPage = () => {
                     <div className="mt-6">
                         <h3 className="text-xl font-semibold">Total: ${total.toFixed(2)}</h3>
                         <button
-                            onClick={clearCart}
+                            onClick={() => dispatch(clearCart())}
                             className="mt-4 bg-red-600 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-600"
                         >
                             Clear Cart

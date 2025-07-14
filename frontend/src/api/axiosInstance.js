@@ -25,6 +25,7 @@ axiosInstance.interceptors.request.use((config) => {
             const isExpired = decoded.exp < Date.now() / 1000;
             if (isExpired) {
                 localStorage.removeItem("user");
+                localStorage.removeItem("shippingAddress");
                 store.dispatch(logout());
                 return Promise.reject(new Error("Token expired"));
             }
@@ -47,6 +48,8 @@ axiosInstance.interceptors.response.use(
         if (error.response?.status === 401) {
             console.warn("Unauthorized. Logging out...");
             localStorage.removeItem("user");
+            localStorage.removeItem("shippingAddress");
+
             store.dispatch(logout());
         }
 

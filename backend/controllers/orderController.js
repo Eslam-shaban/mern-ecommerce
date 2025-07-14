@@ -28,7 +28,7 @@ export const createOrder = async (req, res) => {
             itemsPrice,
             shippingPrice,
             totalPrice,
-            paymentStatus: paymentMethod === 'cash-on-delivery' ? 'pending' : 'paid'
+            paymentStatus: 'pending',
         });
 
         const createdOrder = await order.save();
@@ -149,8 +149,19 @@ export const updateOrderToPaid = async (req, res) => {
     }
     try {
         const order = await Order.findById(id);
+
         if (!order) return res.status(404).json({ success: false, message: "Order not found" });
+
         order.paymentStatus = "paid";
+
+        if (order.paymentMethod !== 'cash-on-delivery') {
+            for (const item of order.orderItems) {
+                const product = await Product.findById(item.product);
+                product.stock -= item.quantity;
+                await product.save();
+            }
+        }
+
         const updatedOrder = await order.save();
         res.status(200).json({ success: true, updatedOrder });
     } catch (error) {

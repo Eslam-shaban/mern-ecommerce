@@ -5,7 +5,9 @@ import { StarIcon } from "lucide-react";
 import InnerImageZoom from 'react-inner-image-zoom';
 import 'react-inner-image-zoom/lib/styles.min.css';
 import CartModal from "../../components/CartModal";
-import { useCart } from "../../contexts/CartContext";
+// import { useCart } from "../../contexts/CartContext";
+import { addToCart } from '../../store/cartSlice';
+import { useDispatch } from 'react-redux'
 import { toast } from "react-toastify";
 
 
@@ -20,14 +22,15 @@ function ProductDetails() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
-    const { addToCart } = useCart();
+    // const { addToCart } = useCart();
+    const dispatch = useDispatch();
 
     const handleAddToCart = () => {
         if (product.stock <= 0) {
             toast.error(`${product.name} is out of stock.`);
             return;
         }
-        addToCart(product);
+        dispatch(addToCart(product));
         setIsModalOpen(true); // Open modal
     };
 
@@ -132,9 +135,16 @@ function ProductDetails() {
                             <span className="text-gray-500 ml-2">({averageRating.toFixed(1)} rating)</span>
                         </div> */}
 
-                        <button className="px-6 py-3 bg-amber-400 text-white rounded-lg hover:bg-amber-500 transition cursor-pointer"
+                        <button
+                            className={`px-6 py-3 bg-amber-400 text-white rounded-lg hover:bg-amber-500 transition cursor-pointer
+                            ${product.stock <= 0
+                                    ? 'bg-gray-400 cursor-not-allowed'
+                                    : 'bg-amber-400 hover:bg-amber-500'
+                                }
+                        `}
+                            disabled={product.stock <= 0}
                             onClick={handleAddToCart}>
-                            Add to Cart
+                            {product.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}
                         </button>
                     </div>
                 </div>
