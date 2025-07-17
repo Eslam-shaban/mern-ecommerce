@@ -1,7 +1,9 @@
 import Order from '../models/Order.js';
 import Product from '../models/Product.js';
 
-
+// @desc    Create new order
+// @route   POST /api/orders/
+// @access  Private (logged-in user or admin)
 export const createOrder = async (req, res) => {
     try {
         const { orderItems, shippingAddress, paymentMethod, itemsPrice, shippingPrice, totalPrice } = req.body;
@@ -47,8 +49,9 @@ export const createOrder = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
-
-// get all orders (Admin only)
+// @desc    Get all orders
+// @route   GET /api/orders/
+// @access  Private (Admin only)
 export const getAllOrders = async (req, res,) => {
     try {
         const { page = 1, limit = 10 } = req.query;
@@ -77,17 +80,19 @@ export const getAllOrders = async (req, res,) => {
         res.status(500).json({ success: false, message: error.message });
     }
 }
-
-//Get logged-in user's orders
-export const getMyOrders = async (req, res) => {
+// @desc    Get logged-in user's orders
+// @route   GET /api/orders/my-orders
+// @access  Private (logged-in user or admin)
+export const getUserOrders = async (req, res) => {
     try {
+        const { userId } = req.params;
         const { page = 1, limit = 10 } = req.query;
         const skip = (page - 1) * limit;
-        const orders = await Order.find({ user: req.user._id })
+        const orders = await Order.find({ user: userId })
             .skip(skip)
             .limit(Number(limit));
 
-        const totalOrders = await Order.countDocuments({ user: req.user._id });
+        const totalOrders = await Order.countDocuments({ user: userId });
         if (!orders.length) {
             return res.status(404).json({ success: false, message: "No orders found" });
         }
@@ -106,7 +111,6 @@ export const getMyOrders = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
-
 // @desc    Get single order by ID
 // @route   GET /api/orders/:id
 // @access  Private (logged-in user or admin)
@@ -135,9 +139,9 @@ export const getOrderById = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
-
-
-//  Update order to "Paid"
+// @desc    Update order to "Paid"
+// @route   PUT /api/orders/:id/pay
+// @access  Private (admin)
 export const updateOrderToPaid = async (req, res) => {
     const id = req.params.id;
     // Validate MongoDB ObjectID
@@ -168,7 +172,9 @@ export const updateOrderToPaid = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
-//   Update order to "Delivered" (Admin only)
+// @desc    Update order to "Delivered"
+// @route   PUT /api/orders/:id/deliver
+// @access  Private (admin)
 export const updateOrderToDelivered = async (req, res) => {
     const id = req.params.id;
     // Validate MongoDB ObjectID

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import API from "../../api/axiosInstance";
 import { Pencil, Trash } from "lucide-react";
 import Pagination from "../../components/Pagination";
@@ -16,6 +16,7 @@ const ProductsList = () => {
         limit: 10,
     });
     const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState(true);
 
     const fetchProducts = async (page = 1, limit = 10) => {
         try {
@@ -29,6 +30,8 @@ const ProductsList = () => {
             });
         } catch (error) {
             console.error("Failed to fetch products", error);
+        } finally {
+            setLoading(false)
         }
     };
     useEffect(() => {
@@ -74,74 +77,78 @@ const ProductsList = () => {
                     + Add Product
                 </button>
             </div>
-
-            <div className="overflow-x-auto rounded-2xl">
-                <table className="min-w-full text-sm text-left border-collapse">
-                    <thead className="bg-gray-100 text-gray-700 uppercase text-xs">
-                        <tr>
-                            <th className="p-4">Product</th>
-                            <th className="p-4">Category</th>
-                            <th className="p-4">Price</th>
-                            <th className="p-4">Stock</th>
-                            {/* <th className="p-4">Created</th> */}
-                            <th className="p-4">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {products.map((product) => (
-                            <tr key={product._id} className="border-b hover:bg-gray-50 transition duration-150">
-                                <td className="p-4 flex items-center gap-3">
-                                    <img
-                                        src={product.images?.[0] || "/placeholder.png"}
-                                        alt={product.name}
-                                        loading="lazy"
-                                        className="w-10 h-10 rounded object-cover border border-gray-400"
-                                    />
-                                    <span className="font-medium text-gray-800">{product.name}</span>
-                                </td>
-                                <td className="p-4">
-                                    <span className="inline-block bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full">
-                                        {product.category}
-                                    </span>
-                                </td>
-                                <td className="p-4 text-green-600 font-semibold">${product.price}</td>
-                                <td className="p-4">
-                                    <span
-                                        className={`inline-block text-xs px-2 py-1 rounded-full ${product.stock > 0 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
-                                            }`}
-                                    >
-                                        {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
-                                    </span>
-                                </td>
-                                {/* <td className="p-4 text-gray-500">
-                                    {new Date(product.createdAt).toLocaleDateString()}
-                                </td> */}
-                                <td className="p-4">
-                                    <div className="flex gap-2">
-                                        <button className="p-2 bg-blue-100 text-blue-600 rounded hover:bg-blue-200 transition hover:scale-105 cursor-pointer"
-                                            onClick={() => navigate(`/dashboard/products/${product._id}/edit`)}>
-                                            <Pencil size={16} />
-                                        </button>
-                                        <button className="p-2 bg-red-100 text-red-600 rounded hover:bg-red-200 transition hover:scale-105 cursor-pointer"
-                                            onClick={() => handleDelete(product._id)}
-                                        >
-                                            <Trash size={16} />
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
-                        {products.length === 0 && (
+            {loading ? (
+                <p>Loading...</p>
+            ) : (!products || products.length === 0) ? (
+                <p className="text-gray-600">There are no Users.</p>
+            ) : (
+                <div className="overflow-x-auto rounded-2xl">
+                    <table className="min-w-full text-sm text-left border-collapse">
+                        <thead className="bg-gray-100 text-gray-700 uppercase text-xs">
                             <tr>
-                                <td colSpan="6" className="text-center py-10 text-gray-500">
-                                    No products found.
-                                </td>
+                                <th className="p-4">Product</th>
+                                <th className="p-4">Category</th>
+                                <th className="p-4">Price</th>
+                                <th className="p-4">Stock</th>
+                                <th className="p-4">Created</th>
+                                <th className="p-4">Actions</th>
                             </tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
-
+                        </thead>
+                        <tbody>
+                            {products.map((product) => (
+                                <tr key={product._id} className="border-b hover:bg-gray-50 transition duration-150">
+                                    <td className="p-4 flex items-center gap-3">
+                                        <img
+                                            src={product.images?.[0] || "/placeholder.png"}
+                                            alt={product.name}
+                                            loading="lazy"
+                                            className="w-10 h-10 rounded object-cover border border-gray-400"
+                                        />
+                                        <span className="font-medium text-gray-800">{product.name}</span>
+                                    </td>
+                                    <td className="p-4">
+                                        <span className="inline-block bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full">
+                                            {product.category}
+                                        </span>
+                                    </td>
+                                    <td className="p-4 text-green-600 font-semibold">${product.price}</td>
+                                    <td className="p-4">
+                                        <span
+                                            className={`inline-block text-xs px-2 py-1 rounded-full ${product.stock > 0 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+                                                }`}
+                                        >
+                                            {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
+                                        </span>
+                                    </td>
+                                    <td className="p-4 text-gray-500">
+                                        {new Date(product.createdAt).toLocaleDateString()}
+                                    </td>
+                                    <td className="p-4">
+                                        <div className="flex gap-2">
+                                            <button className="p-2 bg-blue-100 text-blue-600 rounded hover:bg-blue-200 transition hover:scale-105 cursor-pointer"
+                                                onClick={() => navigate(`/dashboard/products/${product._id}/edit`)}>
+                                                <Pencil size={16} />
+                                            </button>
+                                            <button className="p-2 bg-red-100 text-red-600 rounded hover:bg-red-200 transition hover:scale-105 cursor-pointer"
+                                                onClick={() => handleDelete(product._id)}
+                                            >
+                                                <Trash size={16} />
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                            {products.length === 0 && (
+                                <tr>
+                                    <td colSpan="6" className="text-center py-10 text-gray-500">
+                                        No products found.
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+            )}
             <Pagination pagination={pagination} onPageChange={handlePageChange} />
         </div>
     );

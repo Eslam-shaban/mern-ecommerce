@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import API from "../../api/axiosInstance";
 import Pagination from '../../components/Pagination';
 const UserOrders = () => {
 
-    // const { userId } = useParams();
+    const { userId } = useParams();
     const [orders, setOrders] = useState(null);
     const [loading, setLoading] = useState(true);
     const [pagination, setPagination] = useState({
@@ -25,7 +25,7 @@ const UserOrders = () => {
     const fetchOrders = async () => {
 
         try {
-            let url = `/orders/my-orders?page=${page}&limit=${pagination.limit}`;
+            let url = `/orders/user/${userId}?page=${page}&limit=${pagination.limit}`;
             const { data } = await API.get(url);
             // console.log(data.orders);
             setOrders(data.orders)
@@ -49,13 +49,13 @@ const UserOrders = () => {
     return (
         <div className="p-6 bg-white rounded-2xl shadow-md max-w-6xl mx-auto mt-10">
             <div className="flex justify-between items-center mb-6">
-                <h2 className="text-3xl font-semibold text-gray-800">My Orders</h2>
+                <h2 className="text-3xl font-semibold text-gray-800">Orders</h2>
             </div>
 
             {loading ? (
                 <p>Loading...</p>
             ) : (!orders || orders.length === 0) ? (
-                <p className="text-gray-600">You have no orders yet.</p>
+                <p className="text-gray-600">There are no orders yet.</p>
             ) : (
                 <div className="overflow-x-auto rounded-xl">
                     <table className="min-w-full text-sm text-left border-collapse">

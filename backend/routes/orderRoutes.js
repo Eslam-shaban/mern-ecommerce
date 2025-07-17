@@ -2,7 +2,7 @@ import express from "express";
 import {
     createOrder,
     getAllOrders,
-    getMyOrders,
+    getUserOrders,
     updateOrderToPaid,
     updateOrderToDelivered,
     getOrderById,
@@ -14,8 +14,8 @@ const router = express.Router();
 // Create Order (User must be logged in)
 router.post('/', protect, createOrder);
 
-// Get User's Order
-router.get('/my-orders', protect, getMyOrders);
+// Get User's Order by User Id
+router.get('/user/:userId', protect, getUserOrders);
 
 // Get Order by id
 router.get("/:id", protect, getOrderById);

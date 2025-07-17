@@ -2,6 +2,9 @@ import User from "../models/User.js";
 import jwt from "jsonwebtoken"
 import bcrypt from "bcryptjs"
 
+// @desc    Create new user
+// @route   POST /api/register/
+// @access  (Public)
 export const registerUser = async (req, res) => {
     try {
         const { name, email, password, isAdmin } = req.body;
@@ -64,7 +67,9 @@ export const registerUser = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
-
+// @desc    Login user
+// @route   POST /api/login/
+// @access  (Public)
 export const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -106,18 +111,41 @@ export const loginUser = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 }
-
-// Get All Users (Admin Only)
+// @desc    Get All Users
+// @route   GET /api/users/
+// @access  (Admin Only)
 export const getAllUsers = async (req, res) => {
     try {
-        const users = await User.find().select("-password");// Exclude password for security
+        const { page = 1, limit = 10 } = req.query;  // Default to page 1 and limit 10
+        const skip = (page - 1) * limit;
+        const users = await User.find().select("-password")
+            .skip(skip)
+            .limit(Number(limit));
+
+        const totalUsers = await User.countDocuments();
+        if (!users.length) {
+            return res.status(404).json({ success: false, message: "No users found" });
+        }
+        const totalPages = Math.ceil(totalUsers / limit);
+
         // console.log(users[0])
-        res.json(users);
+        res.status(200).json({
+            success: true,
+            users,
+            pagination: {
+                currentPage: Number(page),
+                totalPages,
+                totalUsers,
+                limit: Number(limit),
+            }
+        });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
 }
-
+// @desc    Get User profile
+// @route   GET /api/users/profile"
+// @access  (logged-in user Only)
 export const getUserProfile = async (req, res) => {
     try {
         // console.log('profile', req.user.id);
@@ -138,6 +166,9 @@ export const getUserProfile = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
+// @desc    Change User password
+// @route   PUT /api/users/change-password"
+// @access  (logged-in user Only)
 export const changePassword = async (req, res) => {
     const { oldPassword, newPassword } = req.body;
 
@@ -162,8 +193,32 @@ export const changePassword = async (req, res) => {
         res.status(500).json({ message: "Server error. Please try again later." });
     }
 };
+// @desc    Delete user
+// @route   DELETE /api/users/"
+// @access  (Admin Only)
+export const DeleteUser = async (req, res) => {
+    const id = req.params.id;
+    // Validate MongoDB ObjectID
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(400).json({
+            success: false,
+            error: "Invalid User ID"
+        });
+    }
+    try {
+        const user = await User.findById(id);
+        if (!user)
+            return res.status(400).json({ success: false, message: "user not found" });
+        await user.deleteOne();
+        res.status(200).json({ success: true, message: "user deleted successfully" });
+
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+
+    }
 
 
+}
 // 1st way
 // if we using cookies instead of localStorage
 // export const logoutUser = async (req, res) => {

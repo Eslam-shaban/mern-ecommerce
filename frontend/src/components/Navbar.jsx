@@ -8,7 +8,7 @@ import { useSearch } from "../contexts/SearchContext";
 import logo from "/logo2.svg";
 // import { useCart } from "../contexts/CartContext";
 import { clearCart } from '../store/cartSlice'
-import { User, LogOut, LogIn, UserPlus, Package, ChevronDown } from "lucide-react";
+import { User, LogOut, LogIn, UserPlus, Package, ChevronDown, LayoutDashboard } from "lucide-react";
 import { useRef } from "react";
 
 const Navbar = () => {
@@ -96,6 +96,7 @@ const Navbar = () => {
                     <div className="flex items-center gap-4">
 
                         <div className="hidden md:flex">
+
                             <div className="relative">
                                 <button onClick={() => setProfileOpen(!profileOpen)} className="flex items-center gap-1 hover:text-black transition cursor-pointer">
                                     <CircleUser size={24} />
@@ -107,16 +108,26 @@ const Navbar = () => {
                                     <div ref={profileRef} className="absolute right-0 mt-3 w-48 text-black bg-white rounded-md shadow-lg z-50 overflow-hidden">
                                         {user ? (
                                             <div className="flex flex-col text-sm">
+                                                {user?.isAdmin && (
+                                                    <div>
+                                                        <Link to="/dashboard"
+                                                            onClick={() => setProfileOpen(false)}
+                                                            className="px-4 py-2 hover:bg-orange-200 hover:font-medium flex items-center gap-2">
+                                                            <LayoutDashboard size={18} />Dashboard
+                                                        </Link>
+                                                    </div>
+                                                )}
                                                 <Link to={`/profile/${user.id}`}
                                                     onClick={() => setProfileOpen(false)}
                                                     className="px-4 py-2 hover:bg-orange-200 hover:font-medium flex items-center gap-2">
                                                     <CircleUser size={16} /> Profile
                                                 </Link>
-                                                <Link to={`/orders/${user.id}`}
+                                                <Link to={`/orders/user/${user.id}`}
                                                     onClick={() => setProfileOpen(false)}
                                                     className="px-4 py-2 hover:bg-orange-200 hover:font-medium flex items-center gap-2">
                                                     <Package size={16} /> My Orders
                                                 </Link>
+
                                                 <button
                                                     onClick={() => {
                                                         handleLogout();

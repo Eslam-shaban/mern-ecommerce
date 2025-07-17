@@ -1,7 +1,9 @@
 
 import Product from '../models/Product.js';
 
-// Get All Products (Public) with Pagination
+// @desc    Get All Products with Pagination
+// @route   GET /api/products/"
+// @access  (Public)
 export const getProducts = async (req, res) => {
     try {
         const { page = 1, limit = 10 } = req.query;  // Default to page 1 and limit 10
@@ -38,9 +40,9 @@ export const getProducts = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
-
-
-// Get Product By ID (Public)
+// @desc    Get Product By ID
+// @route   GET /api/products/:id"
+// @access  (Public)
 export const getProductById = async (req, res) => {
     const id = req.params.id;
     // Validate MongoDB ObjectID
@@ -59,7 +61,9 @@ export const getProductById = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
-// Create New Product (Admin Only)
+// @desc    Create New Product
+// @route   POST /api/products/"
+// @access  (Admin Only)
 export const createProduct = async (req, res) => {
     try {
         const { name, description, price, category, stock, images } = req.body;
@@ -78,7 +82,9 @@ export const createProduct = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
-// Update Product (Admin Only)
+// @desc    Update Product
+// @route   PUT /api/products/:id"
+// @access  (Admin Only)
 export const updateProduct = async (req, res) => {
     try {
         const { name, description, price, category, stock, images } = req.body;
@@ -108,8 +114,9 @@ export const updateProduct = async (req, res) => {
 
     }
 };
-
-// Delete Product (Admin Only)
+// @desc    Delete Product
+// @route   DELETE /api/products/:id"
+// @access  (Admin Only)
 export const deleteProduct = async (req, res) => {
     const id = req.params.id;
     // Validate MongoDB ObjectID
@@ -129,7 +136,9 @@ export const deleteProduct = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 }
-
+// @desc    Get Product Categories 
+// @route   GET /api/products/categories"
+// @access  (Public)
 export const getCategories = async (req, res) => {
     try {
         const categories = await Product.distinct("category");// Get unique categories
@@ -139,7 +148,9 @@ export const getCategories = async (req, res) => {
         res.status(500).json({ success: false, message: "Server error", error });
     }
 };
-
+// @desc    Get Product by category 
+// @route   GET /api/products/category/:category"
+// @access  (Public)
 export const getProductsInCategory = async (req, res) => {
     try {
         /*
@@ -187,7 +198,9 @@ export const getProductsInCategory = async (req, res) => {
         res.status(500).json({ success: false, message: "Server error" });
     }
 };
-
+// @desc    Get Product by search
+// @route   GET /api/products/search"
+// @access  (Public)
 export const getProductsBySearch = async (req, res) => {
     try {
         const { search, page = 1, limit = 10 } = req.query;

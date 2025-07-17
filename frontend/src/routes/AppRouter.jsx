@@ -38,10 +38,9 @@ const AppRouter = () => {
             <Route element={<PrivateRoute />}>
                 {/* Could place /profile or /orders/user routes here later */}
                 <Route path="/profile/:userId" element={<UserProfile />} />
-                <Route path="/orders/:userId" element={<UserOrders />} />
+                <Route path="/orders/user/:userId" element={<UserOrders />} />
                 <Route path="/change-password/:userId" element={<ChangePassword />} />
                 <Route path="/shipping/" element={<ShippingForm />} />
-                <Route path="/place-order/" element={<PlaceOrder />} />
                 <Route path="/place-order/" element={<PlaceOrder />} />
                 <Route path="/order/:orderId" element={<OrderDetails />} />
                 <Route path="/payment/stripe/:orderId" element={<StripePayment />} />
