@@ -23,7 +23,8 @@ const app = express();
 // Middleware
 app.use(express.json()); // Parses incoming JSON requests
 app.use(cors({
-    origin: "http://localhost:3000", // Allow requests from your frontend
+    // origin: "http://localhost:3000", // Allow requests from your frontend
+    origin: "https://mern-ecommerce-three-kappa.vercel.app/", //  frontend live url
     credentials: true // Allow cookies and authorization headers
 }));
 
