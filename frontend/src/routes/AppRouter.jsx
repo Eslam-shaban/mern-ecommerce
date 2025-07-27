@@ -20,7 +20,6 @@ import UserOrders from "../pages/public/UserOrders";
 import ChangePassword from "../pages/public/ChangePassword";
 import ShippingForm from "../pages/public/ShippingForm";
 import PlaceOrder from "../pages/public/PlaceOrder";
-import Payment from "../pages/public/Payment";
 import OrderDetails from "../pages/public/OrderDetails";
 import StripePayment from "../pages/public/StripePayment";
 
