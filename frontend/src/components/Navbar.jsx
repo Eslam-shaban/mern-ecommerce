@@ -26,6 +26,11 @@ const Navbar = () => {
         dispatch(clearCart());                 // ✅ Safe to call here
         dispatch(logout()); // No need to pass clearCart inside
     };
+    const handleCloseMenu = () => {
+        setProfileOpen(false);
+        setMenuOpen(false);
+
+    };
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -38,6 +43,7 @@ const Navbar = () => {
                 const updatedUser = { ...user, ...response.data.user };
                 dispatch(setUser(updatedUser));
                 // dispatch(setUser(response.data.user));
+                console.log(updatedUser)
             } catch (error) {
                 console.error("Error fetching user:", error);
             }
@@ -183,46 +189,62 @@ const Navbar = () => {
 
             {/* Mobile Menu */}
             {menuOpen && (
-                <div ref={profileRef} className="md:hidden bg-orange-300/90 p-4 space-y-4 w-full absolute top-[72px] left-0 z-50">
-                    <input
-                        type="text"
-                        placeholder="Search..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        onKeyDown={(e) => e.key === "Enter" && handleSearch(searchQuery)}
-                        className="w-full px-4 py-2 rounded-md text-black bg-amber-50/35 border border-gray-700"
-                    />
-                    <div className="flex flex-col gap-2">
-                        {user ? (
-                            <>
-                                <Link to={`/profile/${user.id}`}
-                                    onClick={() => setMenuOpen(false)}
-                                    className="px-4 py-2 rounded hover:bg-orange-200 hover:font-medium flex items-center gap-2">
-                                    <CircleUser size={16} /> Profile
-                                </Link>
-                                <Link to={`/orders/${user.id}`}
-                                    onClick={() => setMenuOpen(false)}
-                                    className="px-4 py-2 rounded hover:bg-orange-200 hover:font-medium flex items-center gap-2">
-                                    <Package size={16} /> My Orders
-                                </Link>
-                                <button
-                                    onClick={() => {
-                                        handleLogout();
-                                        setMenuOpen(false);
-                                    }} className="bg-red-500 text-white py-2 rounded hover:bg-red-600 cursor-pointer hover:scale-101">
-                                    Logout
-                                </button>
-                            </>
-                        ) : (
-                            <>
-                                <Link to="/login" onClick={() => setMenuOpen(false)} className="px-4 py-2 rounded hover:bg-orange-200 hover:font-medium flex items-center gap-2">
-                                    <LogIn size={16} /> Login
-                                </Link>
-                                <Link to="/register" onClick={() => setMenuOpen(false)} className="px-4 py-2 rounded hover:bg-orange-200 hover:font-medium flex items-center gap-2">
-                                    <UserPlus size={16} /> Register
-                                </Link>
-                            </>
-                        )}
+                <div className="md:hidden bg-[#282831]/90 backdrop-blur-sm p-4 space-y-4 fixed inset-0 left-0 z-50">
+                    <div ref={profileRef} className="bg-[#18181B] mt-7 m-auto w-3/4 rounded-lg py-4 px-6 shadow-cyan-600 animate-modal">
+
+                        <X size={28} className="cursor-pointer mt-1 ml-auto text-white hover:text-red-600 hover:rotate-180 hover:scale-110 transition-all duration-300 ease-in-out"
+                            onClick={handleCloseMenu} />
+
+                        <input
+                            type="text"
+                            placeholder="Search..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onKeyDown={(e) => e.key === "Enter" && handleSearch(searchQuery)}
+                            className="w-full px-4 py-2 my-4 text-white rounded-md  border-1 outline-0"
+                        />
+                        <div className="flex flex-col gap-2">
+                            {user ? (
+
+                                <>
+                                    {user?.isAdmin && (
+                                        <div>
+                                            <Link to="/dashboard"
+                                                onClick={() => setProfileOpen(false)}
+                                                className="px-4 py-2 text-white hover:text-amber-500 hover:font-medium flex items-center gap-2 border-b-1 border-gray-700 hover:bg-gray-500/10">
+                                                <LayoutDashboard size={18} />Dashboard
+                                            </Link>
+                                        </div>
+                                    )}
+                                    <Link to={`/profile/${user.id}`}
+                                        onClick={() => setMenuOpen(false)}
+                                        className="px-4 py-2 text-white hover:text-amber-500 hover:font-medium flex items-center gap-2 border-b-1 border-gray-700 hover:bg-gray-500/10">
+                                        <CircleUser size={16} /> Profile
+                                    </Link>
+                                    <Link to={`/orders/${user.id}`}
+                                        onClick={() => setMenuOpen(false)}
+                                        className="px-4 py-2 text-white hover:text-amber-500 hover:font-medium flex items-center gap-2 border-b-1 border-gray-700 hover:bg-gray-500/10">
+                                        <Package size={16} /> My Orders
+                                    </Link>
+                                    <button
+                                        onClick={() => {
+                                            handleLogout();
+                                            setMenuOpen(false);
+                                        }} className="bg-red-500/50 text-white py-2 rounded hover:bg-red-600 cursor-pointer hover:scale-101">
+                                        Logout
+                                    </button>
+                                </>
+                            ) : (
+                                <>
+                                    <Link to="/login" onClick={() => setMenuOpen(false)} className="px-4 py-2 text-white hover:text-amber-500 hover:font-medium flex items-center gap-2 border-b-1 border-gray-700 hover:bg-gray-500/10">
+                                        <LogIn size={16} /> Login
+                                    </Link>
+                                    <Link to="/register" onClick={() => setMenuOpen(false)} className="px-4 py-2 text-white hover:text-amber-500 hover:font-medium flex items-center gap-2 hover:bg-gray-500/10">
+                                        <UserPlus size={16} /> Register
+                                    </Link>
+                                </>
+                            )}
+                        </div>
                     </div>
                 </div>
 
