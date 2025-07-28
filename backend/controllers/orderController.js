@@ -81,7 +81,7 @@ export const getAllOrders = async (req, res,) => {
     }
 }
 // @desc    Get logged-in user's orders
-// @route   GET /api/orders/my-orders
+// @route   GET /api/orders/user/:userId
 // @access  Private (logged-in user or admin)
 export const getUserOrders = async (req, res) => {
     try {

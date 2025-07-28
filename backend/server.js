@@ -19,11 +19,21 @@ const app = express();
 // if we using cookies instead of localStorage
 // app.use(cookieParser());
 
+const allowedOrigins = [
+    "https://mern-ecommerce-three-kappa.vercel.app",
+    "http://localhost:3000" // if testing locally
+];
 
 // Middleware
 app.use(express.json()); // Parses incoming JSON requests
 app.use(cors({
-    origin: "http://localhost:3000", // Allow requests from your frontend
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     credentials: true // Allow cookies and authorization headers
 }));
 
