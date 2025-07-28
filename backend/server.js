@@ -36,8 +36,9 @@ app.use(cors({
     },
     credentials: true // Allow cookies and authorization headers
 }));
+// app.use(cors());
 
-app.use('/api/v1/products', productRoutes)
+app.use('/api/v1/products', productRoutes);
 app.use('/api/v1/users', authRoutes);
 app.use('/api/v1/orders', orderRoutes); //  Use order routes
 app.use('/api/v1/stripe', stripeRoutes);
