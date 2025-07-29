@@ -134,7 +134,7 @@ cd client
 npm run dev
 ```
 
-Open [`http://localhost:5173`](http://localhost:5173) in your browser.
+Open [`http://localhost:5173`](http://localhost:3000) in your browser.
 
 ---
 
@@ -151,8 +151,6 @@ Open [`http://localhost:5173`](http://localhost:5173) in your browser.
 
 ## 📸 Screenshots
 
-You can include these (add to `client/public/screenshots/`):
-
 * Home Page
 * Product Detail Page
 * Cart Page
@@ -163,7 +161,6 @@ You can include these (add to `client/public/screenshots/`):
 * Admin Dashboard
 
 Markdown for adding screenshots:
-
 
 ### Home Page
 <img width="935" height="612" alt="Screenshot 2025-06-26 153530" src="https://github.com/user-attachments/assets/03df1dcb-369f-479f-982b-b4141dcfc8ac" />
