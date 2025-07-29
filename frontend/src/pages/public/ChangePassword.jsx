@@ -64,48 +64,51 @@ const ChangePassword = () => {
     };
 
     return (
-        <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded shadow-md">
-            <h2 className="text-xl font-semibold mb-4">Change Password</h2>
-            <form onSubmit={handleChangePassword} className="space-y-4">
-                <div>
-                    <label className="block text-sm font-medium">Old Password</label>
-                    <input
-                        type="password"
-                        value={oldPassword}
-                        onChange={(e) => setOldPassword(e.target.value)}
-                        className="w-full mt-1 px-4 py-2 border rounded"
-                        required
-                    />
-                </div>
-                <div>
-                    <label className="block text-sm font-medium">New Password</label>
-                    <input
-                        type="password"
-                        value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
-                        className="w-full mt-1 px-4 py-2 border rounded"
-                        required
-                    />
-                </div>
-                <div>
-                    <label className="block text-sm font-medium">Confirm New Password</label>
-                    <input
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        className="w-full mt-1 px-4 py-2 border rounded"
-                        required
-                    />
-                </div>
-                <button
-                    disabled={loading}
-                    type="submit"
-                    className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded disabled:cursor-not-allowed"
-                >
-                    {loading ? "Changing..." : "Change Password"}
-                </button>
-            </form>
+        <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
+            <div className="w-full max-w-xl mx-auto p-6 bg-white rounded shadow-md">
+                <h2 className="text-2xl font-semibold mb-6 text-center">Change Password</h2>
+                <form onSubmit={handleChangePassword} className="space-y-4">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Old Password</label>
+                        <input
+                            type="password"
+                            value={oldPassword}
+                            onChange={(e) => setOldPassword(e.target.value)}
+                            className="w-full mt-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-400"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">New Password</label>
+                        <input
+                            type="password"
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                            className="w-full mt-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-400"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Confirm New Password</label>
+                        <input
+                            type="password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            className="w-full mt-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-400"
+                            required
+                        />
+                    </div>
+                    <button
+                        disabled={loading}
+                        type="submit"
+                        className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded disabled:cursor-not-allowed"
+                    >
+                        {loading ? "Changing..." : "Change Password"}
+                    </button>
+                </form>
+            </div>
         </div>
+
     );
 };
 

@@ -36,13 +36,15 @@ const StripePayment = () => {
     };
 
     return (
-        <div className="max-w-xl mx-auto mt-8">
-            <h2 className="text-2xl font-bold mb-4">Card Payment</h2>
-            {clientSecret && (
-                <Elements stripe={stripePromise} options={options}>
-                    <CheckoutForm clientSecret={clientSecret} orderId={orderId} />
-                </Elements>
-            )}
+        <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
+            <div className="w-full max-w-lg mx-auto p-6 bg-white shadow-md mt-10 rounded-md">
+                <h2 className="text-2xl font-bold mb-4">Card Payment</h2>
+                {clientSecret && (
+                    <Elements stripe={stripePromise} options={options}>
+                        <CheckoutForm clientSecret={clientSecret} orderId={orderId} />
+                    </Elements>
+                )}
+            </div>
         </div>
     );
 };

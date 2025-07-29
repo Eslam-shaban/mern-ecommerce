@@ -37,12 +37,12 @@ const UserProfile = () => {
 
 
     return (
-        <div className="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="min-h-screen max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-4 gap-6">
 
             {/* Sidebar - shown second on small screens, left side on md+ */}
             <aside className="md:col-span-1 space-y-4 order-2 md:order-none">
                 <Link
-                    to={`/orders/${user.id}`}
+                    to={`/orders/user/${user.id}`}
                     className="block w-full text-center bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded"
                 >
                     My Orders

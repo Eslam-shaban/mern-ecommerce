@@ -221,7 +221,7 @@ const Navbar = () => {
                                         className="px-4 py-2 text-white hover:text-amber-500 hover:font-medium flex items-center gap-2 border-b-1 border-gray-700 hover:bg-gray-500/10">
                                         <CircleUser size={16} /> Profile
                                     </Link>
-                                    <Link to={`/orders/${user.id}`}
+                                    <Link to={`/orders/user/${user.id}`}
                                         onClick={() => setMenuOpen(false)}
                                         className="px-4 py-2 text-white hover:text-amber-500 hover:font-medium flex items-center gap-2 border-b-1 border-gray-700 hover:bg-gray-500/10">
                                         <Package size={16} /> My Orders

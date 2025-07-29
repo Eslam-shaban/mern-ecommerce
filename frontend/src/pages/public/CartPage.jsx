@@ -16,7 +16,7 @@ const CartPage = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="container mx-auto p-6">
+        <div className="container min-h-screen mx-auto p-6">
             <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
             {cartItems.length === 0 ? (
                 <p>Your cart is empty.</p>

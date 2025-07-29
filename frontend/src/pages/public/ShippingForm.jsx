@@ -140,75 +140,78 @@ const ShippingForm = () => {
     };
 
     return (
-        <div className="max-w-lg mx-auto p-6 bg-white shadow-md mt-10 rounded-md">
-            <h2 className="text-2xl font-bold mb-6 text-center">Shipping Address</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
 
-                <input
-                    type="text"
-                    name="address"
-                    value={address.address}
-                    onChange={handleChange}
-                    placeholder="Street Address"
-                    required
-                    className="w-full px-4 py-2 border rounded-md focus:ring-amber-400"
-                />
+            <div className="max-w-lg mx-auto p-6 bg-white shadow-md mt-10 rounded-md">
+                <h2 className="text-2xl font-bold mb-6 text-center">Shipping Address</h2>
+                <form onSubmit={handleSubmit} className="space-y-4">
 
-                {/* Country Dropdown */}
-                <select
-                    name="country"
-                    value={address.country}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-2 border rounded-md"
-                >
-                    <option value="" disabled>Select Country</option>
-                    {countries.map((country) => (
-                        <option key={country.iso2} value={country.iso2}>
-                            {country.name}
-                        </option>
-                    ))}
-                </select>
+                    <input
+                        type="text"
+                        name="address"
+                        value={address.address}
+                        onChange={handleChange}
+                        placeholder="Street Address"
+                        required
+                        className="w-full mt-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-400"
+                    />
 
-                {/* Region Dropdown */}
-                <select
-                    name="state"
-                    value={address.state}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-2 border rounded-md"
-                >
-                    <option value="" disabled>Select Region</option>
-                    {states.map((state) => (
-                        <option key={state.iso2} value={state.iso2}>
-                            {state.name}
-                        </option>
-                    ))}
-                </select>
+                    {/* Country Dropdown */}
+                    <select
+                        name="country"
+                        value={address.country}
+                        onChange={handleChange}
+                        required
+                        className="w-full mt-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-400"
+                    >
+                        <option value="" disabled>Select Country</option>
+                        {countries.map((country) => (
+                            <option key={country.iso2} value={country.iso2}>
+                                {country.name}
+                            </option>
+                        ))}
+                    </select>
 
-                {/* City Dropdown */}
-                <select
-                    name="city"
-                    value={address.city}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-2 border rounded-md"
-                >
-                    <option value="" disabled>Select City</option>
-                    {cities.map((city) => (
-                        <option key={city.id} value={city.id}>
-                            {city.name}
-                        </option>
-                    ))}
-                </select>
+                    {/* Region Dropdown */}
+                    <select
+                        name="state"
+                        value={address.state}
+                        onChange={handleChange}
+                        required
+                        className="w-full mt-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-400"
+                    >
+                        <option value="" disabled>Select Region</option>
+                        {states.map((state) => (
+                            <option key={state.iso2} value={state.iso2}>
+                                {state.name}
+                            </option>
+                        ))}
+                    </select>
 
-                <button
-                    type="submit"
-                    className="w-full py-2 bg-amber-500 text-white font-semibold rounded hover:bg-amber-600 cursor-pointer"
-                >
-                    Continue to Place Order
-                </button>
-            </form>
+                    {/* City Dropdown */}
+                    <select
+                        name="city"
+                        value={address.city}
+                        onChange={handleChange}
+                        required
+                        className="w-full mt-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-400"
+                    >
+                        <option value="" disabled>Select City</option>
+                        {cities.map((city) => (
+                            <option key={city.id} value={city.id}>
+                                {city.name}
+                            </option>
+                        ))}
+                    </select>
+
+                    <button
+                        type="submit"
+                        className="w-full py-2 bg-amber-500 text-white font-semibold rounded hover:bg-amber-600 cursor-pointer"
+                    >
+                        Continue to Place Order
+                    </button>
+                </form>
+            </div>
         </div>
     );
 };

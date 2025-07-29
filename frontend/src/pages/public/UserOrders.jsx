@@ -47,7 +47,7 @@ const UserOrders = () => {
 
 
     return (
-        <div className="p-6 bg-white rounded-2xl shadow-md max-w-6xl mx-auto mt-10">
+        <div className="min-h-screen p-6 bg-white rounded-2xl shadow-md max-w-6xl mx-auto mt-10">
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-3xl font-semibold text-gray-800">Orders</h2>
             </div>
@@ -55,7 +55,7 @@ const UserOrders = () => {
             {loading ? (
                 <p>Loading...</p>
             ) : (!orders || orders.length === 0) ? (
-                <p className="text-gray-600">There are no orders yet.</p>
+                <p className="text-gray-600 py-8">There are no orders yet.</p>
             ) : (
                 <div className="overflow-x-auto rounded-xl">
                     <table className="min-w-full text-sm text-left border-collapse">
