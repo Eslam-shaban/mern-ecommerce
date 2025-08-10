@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API from '../../api/axiosInstance';
+import Button from '../../components/Button';
 
 const ShippingForm = () => {
     const navigate = useNavigate();
@@ -204,12 +205,12 @@ const ShippingForm = () => {
                         ))}
                     </select>
 
-                    <button
-                        type="submit"
-                        className="w-full py-2 bg-amber-500 text-white font-semibold rounded hover:bg-amber-600 cursor-pointer"
+                    <Button
+                        className='primary-btn w-full cursor-pointer'
+                        isSubmit={true}
                     >
                         Continue to Place Order
-                    </button>
+                    </Button>
                 </form>
             </div>
         </div>

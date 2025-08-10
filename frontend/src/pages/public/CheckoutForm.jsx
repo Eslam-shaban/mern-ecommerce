@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import API from "../../api/axiosInstance";
 import { useDispatch } from "react-redux";
 import { clearCart } from "../../store/cartSlice";
+import Button from "../../components/Button";
 
 const CheckoutForm = ({ clientSecret, orderId }) => {
     const stripe = useStripe();
@@ -61,13 +62,13 @@ const CheckoutForm = ({ clientSecret, orderId }) => {
                 className="border p-4 rounded"
             />
             {error && <p className="text-red-500">{error}</p>}
-            <button
-                type="submit"
-                disabled={!stripe || loading}
-                className="bg-amber-500 text-white px-4 py-2 rounded hover:bg-amber-600 cursor-pointer"
+            <Button
+                className="primary-btn cursor-pointer"
+                isSubmit={true}
+                isDisabled={!stripe || loading}
             >
                 {loading ? "Processing..." : "Pay Now"}
-            </button>
+            </Button>
         </form>
     );
 };

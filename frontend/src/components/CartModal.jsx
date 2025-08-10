@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import Button from './Button';
 
 const CartModal = ({ onClose, product }) => {
 
@@ -19,9 +20,25 @@ const CartModal = ({ onClose, product }) => {
                     </div>
                 </div>
                 <div className="flex justify-end gap-4 pt-2">
-                    <button
+                    <Button
+                        className="secondary-btn hover:bg-gray-400"
                         onClick={onClose}
-                        className="px-4 py-2 bg-gray-300 rounded cursor-pointer hover:bg-gray-400 "
+                    >
+                        Continue Shopping
+                    </Button>
+                    <Button
+                        className="primary-btn cursor-pointer"
+                        onClick={() => {
+                            // Navigate to checkout or perform checkout action
+                            // onClose();
+                            navigate("/products/cart")
+                        }}
+                    >
+                        Checkout
+                    </Button>
+                    {/* <button
+                        onClick={onClose}
+                        className="secondary-btn hover:bg-gray-400"
                     >
                         Continue Shopping
                     </button>
@@ -34,7 +51,7 @@ const CartModal = ({ onClose, product }) => {
                         className="px-4 py-2 bg-amber-400 text-white rounded cursor-pointer hover:bg-amber-500 "
                     >
                         Checkout
-                    </button>
+                    </button> */}
                 </div>
             </div>
         </div>

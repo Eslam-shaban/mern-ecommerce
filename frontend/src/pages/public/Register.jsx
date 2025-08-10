@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../../store/authSlice";
 import { toast } from "react-toastify";
 import { Eye, EyeOff } from "lucide-react";
+import Button from "../../components/Button";
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -99,13 +100,11 @@ const Register = () => {
                 </div>
 
                 {/* Submit Button */}
-                <button
-                    type="submit"
-                    className="w-full py-2 bg-orange-500 text-white rounded cursor-pointer hover:bg-orange-600 transition duration-200"
-                >
+                <Button
+                    className="primary-btn w-full"
+                    isSubmit={true}>
                     Register
-                </button>
-
+                </Button>
                 <p className="text-center text-sm text-gray-500">
                     Already have an account?{" "}
                     <span

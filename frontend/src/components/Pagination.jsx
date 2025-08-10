@@ -1,9 +1,17 @@
+import Button from "./Button";
 
 
 const Pagination = ({ pagination, onPageChange }) => {
     // console.log(pagination)
     return (
         <div className="pagination flex justify-center gap-4 my-8">
+
+            {/* <Button className={` secondary-btn cursor-pointer ${(pagination.currentPage === 1) ? "bg-gray-300" : "bg-gray-300 cursor-pointer hover:bg-amber-600 hover:text-amber-50"}`}
+                onClick={() => onPageChange(pagination.currentPage - 1)}
+                isDisabled={pagination.currentPage === 1}
+            >
+                Previous
+            </Button> */}
             <button
                 onClick={() => onPageChange(pagination.currentPage - 1)}
                 disabled={pagination.currentPage === 1}

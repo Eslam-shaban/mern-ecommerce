@@ -8,6 +8,7 @@ import API from '../../api/axiosInstance';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
+import Button from '../../components/Button';
 
 const PlaceOrder = () => {
     // const { cartItems, clearCart, calculateTotalPrice } = useCart();
@@ -44,10 +45,10 @@ const PlaceOrder = () => {
             };
 
             const res = await API.post('/orders', orderData);
-            console.log('Order response:', res.data);
+            // console.log('Order response:', res.data);
 
             if (res.data.createdOrder?._id) {
-                console.log("Order ID:", res.data.createdOrder._id);
+                // console.log("Order ID:", res.data.createdOrder._id);
 
                 if (paymentMethod === 'cash-on-delivery') {
                     // console.log("here inside cash on delivery")
@@ -125,13 +126,14 @@ const PlaceOrder = () => {
                             <option value="card-stripe">Using Card</option>
                         </select>
                     </div>
-                    <button
+                    <Button
                         onClick={placeOrder}
-                        disabled={cartItems.length === 0}
-                        className="mt-6 w-full py-2 cursor-pointer bg-amber-500 text-white font-semibold rounded hover:bg-amber-600"
+                        isDisabled={cartItems.length === 0}
+                        className='primary-btn mt-6 w-full cursor-pointer'
                     >
                         Place Order
-                    </button>
+
+                    </Button>
                 </div>
             </div>
         </div>

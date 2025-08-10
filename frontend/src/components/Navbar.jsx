@@ -31,7 +31,7 @@ const Navbar = () => {
         setMenuOpen(false);
 
     };
-
+    
     useEffect(() => {
         const fetchUser = async () => {
             if (!user || !user.token) return;
@@ -43,7 +43,7 @@ const Navbar = () => {
                 const updatedUser = { ...user, ...response.data.user };
                 dispatch(setUser(updatedUser));
                 // dispatch(setUser(response.data.user));
-                console.log(updatedUser)
+                // console.log(updatedUser)
             } catch (error) {
                 console.error("Error fetching user:", error);
             }

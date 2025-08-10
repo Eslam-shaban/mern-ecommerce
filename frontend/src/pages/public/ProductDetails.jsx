@@ -9,6 +9,7 @@ import CartModal from "../../components/CartModal";
 import { addToCart } from '../../store/cartSlice';
 import { useDispatch } from 'react-redux'
 import { toast } from "react-toastify";
+import Button from "../../components/Button";
 
 
 
@@ -134,18 +135,16 @@ function ProductDetails() {
                             {RenderStars(averageRating)}
                             <span className="text-gray-500 ml-2">({averageRating.toFixed(1)} rating)</span>
                         </div> */}
-
-                        <button
-                            className={`px-6 py-3 bg-amber-400 text-white rounded-lg hover:bg-amber-500 transition cursor-pointer
+                        <Button className={`primary-btn
                             ${product.stock <= 0
-                                    ? 'bg-gray-400 cursor-not-allowed'
-                                    : 'bg-amber-400 hover:bg-amber-500'
-                                }
-                        `}
-                            disabled={product.stock <= 0}
-                            onClick={handleAddToCart}>
+                                ? 'bg-gray-400 cursor-not-allowed'
+                                : 'bg-amber-400 hover:bg-amber-500'
+                            }`}
+                            onClick={handleAddToCart}
+                            isDisabled={product.stock <= 0}
+                        >
                             {product.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}
-                        </button>
+                        </Button>
                     </div>
                 </div>
 

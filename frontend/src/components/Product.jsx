@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 // import { useCart } from '../contexts/CartContext';
 import { addToCart } from '../store/cartSlice';
 import { useDispatch } from 'react-redux';
+import Button from './Button';
 
 function Product({ product, onClick }) {
     // const { addToCart } = useCart();
@@ -31,9 +32,9 @@ function Product({ product, onClick }) {
                     <p className='text-2xl font-bold pl-1'>${product.price}</p>
                 </div>
                 <div className="card-actions justify-start">
-                    <button className="mt-2 bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-md cursor-pointer"
-                        onClick={handleAddToCart}
-                    >Add to Cart</button>
+                    <Button className="primary-btn cursor-pointer mt-2" onClick={handleAddToCart}>
+                        Add to Cart
+                    </Button>
                 </div>
             </div>
         </div>
